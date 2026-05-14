@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-dark: #0a0a0a;
+  --surface: #161616;
+  --surface-hover: #222222;
+  --border-color: #333333;
+  --primary: #ff6a00;
+  --accent: #e62e00;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* NAV */
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BOTÓN */
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.full-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* HERO */
+
+.hero {
+  text-align: center;
+  padding: 100px 0 80px;
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  max-width: 900px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+/* FEATURES */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 30px;
+  padding: 60px 0;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.feature-card:hover {
+  border-color: var(--primary);
+}
+
+.icon {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  margin-bottom: 15px;
+}
+
+.feature-card p {
+  color: var(--text-muted);
+}
+
+/* DASHBOARD */
+
+.dashboard-section {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.dashboard-section h2 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.dashboard-section p {
+  color: var(--text-muted);
+  margin-bottom: 50px;
+}
+
+.dashboard-mockup {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 25px 40px;
+  min-width: 220px;
+}
+
+.metric-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.metric-number.active {
+  color: var(--primary);
+}
+
+.metric-label {
+  color: var(--text-muted);
+}
+
+/* PRICING */
+
+.pricing-section {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.pricing-section h2 {
+  font-size: 2.4rem;
+  margin-bottom: 50px;
+}
+
+.pricing-table {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.price-card {
+  width: 350px;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: left;
+}
+
+.price-card.featured {
+  border-color: var(--primary);
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.price span {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.price-card ul {
+  list-style: none;
+  margin: 25px 0;
+}
+
+.price-card li {
+  margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.price-card li::before {
+  content: "✓ ";
+  color: var(--primary);
+}
+
+.small-text {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 60px 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 50px;
+}
+
+footer h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+footer p {
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.discount-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255,106,0,.1);
+  color: var(--primary);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+  nav {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .pricing-table,
+  .dashboard-mockup {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .price-card {
+    width: 100%;
+    max-width: 400px;
+  }
+
+}
