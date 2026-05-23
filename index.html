@@ -3,125 +3,643 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monira - Gestión Operativa</title>
+  <title>Monira – Gestión Operativa para México</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="container">
-      <nav>
+<!-- ══ HEADER ══════════════════════════════════════════ -->
+<header class="site-header" id="header">
+  <div class="container">
+    <nav>
+      <div class="logo">
+        <img src="Monira-removebg-preview.png" alt="Monira" class="logo-img">
+        Monira
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#features">Funciones</a></li>
+        <li><a href="#how-it-works">Proceso</a></li>
+        <li><a href="#comparison">Comparativa</a></li>
+        <li><a href="#pricing">Precios</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#prueba" class="btn btn-nav">Prueba gratuita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ HERO ═════════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        🇲🇽 Diseñado para México
+      </div>
+      <h1>Gestión de Proyectos<br><span class="gradient-text">Sin Límites</span></h1>
+      <p>Lo mejor de las plataformas líderes — unificado en una sola herramienta diseñada para la realidad operativa de México. Sin costos en dólares. Sin complejidad innecesaria.</p>
+      <div class="hero-ctas">
+        <a href="#prueba" class="btn">Prueba gratuita de 30 días</a>
+        <a href="#how-it-works" class="btn btn-outline">Ver cómo funciona →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-n">500+</span><span class="hstat-l">Empresas</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">98%</span><span class="hstat-l">Satisfacción</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">3×</span><span class="hstat-l">Productividad</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="app-window">
+        <div class="win-bar">
+          <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
+          <span class="win-title">Monira · Sprint Q2</span>
+        </div>
+        <div class="win-tabs">
+          <span class="wtab active">Kanban</span>
+          <span class="wtab">Timeline</span>
+          <span class="wtab">Lista</span>
+        </div>
+        <div class="kanban-board">
+          <div class="kb-col">
+            <div class="kb-head todo-h">Por Hacer <em>3</em></div>
+            <div class="kb-card">
+              <span class="card-title">Diseño UI</span>
+              <div class="card-meta"><span class="av">ED</span><span class="pri high">Alta</span></div>
+            </div>
+            <div class="kb-card">
+              <span class="card-title">Doc. API</span>
+              <div class="card-meta"><span class="av">MR</span><span class="pri med">Media</span></div>
+            </div>
+          </div>
+          <div class="kb-col">
+            <div class="kb-head prog-h">En Proceso <em>2</em></div>
+            <div class="kb-card kb-active">
+              <span class="card-title">Backend Dev</span>
+              <div class="kb-bar-wrap"><div class="kb-bar-fill" style="width:65%"></div></div>
+              <div class="card-meta"><span class="av">AL</span><span class="pri high">Alta</span></div>
+            </div>
+            <div class="kb-card">
+              <span class="card-title">Testing QA</span>
+              <div class="card-meta"><span class="av">JC</span><span class="pri med">Media</span></div>
+            </div>
+          </div>
+          <div class="kb-col">
+            <div class="kb-head done-h">Completado <em>3</em></div>
+            <div class="kb-card kb-done">Diseño UX ✓</div>
+            <div class="kb-card kb-done">BD Setup ✓</div>
+            <div class="kb-card kb-done">Auth ✓</div>
+          </div>
+        </div>
+      </div>
+      <div class="float-chip chip-1"><span class="chip-dot"></span> Tarea completada</div>
+      <div class="float-chip chip-2">⚡ 3 notificaciones</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIAL PROOF ══════════════════════════════════════ -->
+<section class="proof-bar">
+  <div class="container proof-inner">
+    <span class="proof-label">Confían en Monira</span>
+    <div class="proof-logos">
+      <span>TechMX</span><span>Grupo Alfa</span><span>StartupMX</span>
+      <span>InnovaLab</span><span>DigiFlow</span><span>NexoPro</span>
+      <span>BizOps360</span><span>Operativa MX</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══════════════════════════════════════════ -->
+<section class="section features-section" id="features">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Ventajas</span>
+      <h2>Diseñado para <span class="gradient-text">tu realidad</span></h2>
+      <p>Sin costos en dólares, sin soporte genérico, sin complejidad innecesaria</p>
+    </div>
+    <div class="features">
+      <div class="feature-card reveal">
+        <div class="icon">💰</div>
+        <h3>Economía Real</h3>
+        <p>Facturación en MXN sin riesgo cambiario. Precios fijos. Factura CFDI incluida.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">🤝</div>
+        <h3>Soporte Humano</h3>
+        <p>Contacto directo con el equipo de desarrollo. Soporte en español, sin bots ni esperas.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">🛡️</div>
+        <h3>Seguridad Total</h3>
+        <p>Roles y permisos granulares. Cumplimiento LFPDPPP. Backups diarios automáticos.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">⚡</div>
+        <h3>Todo en Uno</h3>
+        <p>Kanban, Gantt, listas, calendario y reportes — dentro de una sola plataforma integrada.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">🔗</div>
+        <h3>Integraciones</h3>
+        <p>Conecta con WhatsApp, SAT, CFDI, Slack y tus herramientas favoritas sin esfuerzo.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="icon">🤖</div>
+        <h3>IA Integrada</h3>
+        <p>Análisis inteligente de proyectos con insights accionables en tiempo real.</p>
+        <span class="feat-link">Conocer más →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══════════════════════════════════════════════ -->
+<section class="stats-band">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-wrap">
+          <span class="stat-num" data-target="500">0</span><span class="stat-sfx">+</span>
+        </div>
+        <div class="stat-label">Empresas activas</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-wrap">
+          <span class="stat-num" data-target="98">0</span><span class="stat-sfx">%</span>
+        </div>
+        <div class="stat-label">Tasa de satisfacción</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-wrap">
+          <span class="stat-num" data-target="40">0</span><span class="stat-sfx">%</span>
+        </div>
+        <div class="stat-label">Reducción en tiempo de gestión</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-wrap">
+          <span class="stat-num" data-target="10000">0</span><span class="stat-sfx">+</span>
+        </div>
+        <div class="stat-label">Tareas completadas diariamente</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══════════════════════════════════════ -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Proceso</span>
+      <h2>Empieza en <span class="gradient-text">3 pasos</span></h2>
+      <p>De cero a productivo en minutos, no semanas</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-emoji">🏗️</div>
+        <h3>Crea tu espacio</h3>
+        <p>Registra tu empresa, invita a tu equipo y configura tu workspace en menos de 5 minutos. Sin tarjeta de crédito.</p>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <div class="step-emoji">📋</div>
+        <h3>Organiza proyectos</h3>
+        <p>Crea tableros Kanban, timelines o listas. Asigna responsables, fechas y prioridades con un clic.</p>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <div class="step-emoji">📈</div>
+        <h3>Mide y mejora</h3>
+        <p>Monitorea el avance en tiempo real desde tu dashboard. Reportes automáticos para decisiones con datos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VIEWS SHOWCASE ════════════════════════════════════ -->
+<section class="section views-section">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Vistas</span>
+      <h2>Tu trabajo, <span class="gradient-text">como quieras verlo</span></h2>
+      <p>Cambia entre vistas con un clic sin perder ningún dato</p>
+    </div>
+    <div class="view-tabs reveal">
+      <button class="view-tab active" data-view="kanban">🗂 Kanban</button>
+      <button class="view-tab" data-view="timeline">📅 Timeline</button>
+      <button class="view-tab" data-view="lista">📋 Lista</button>
+      <button class="view-tab" data-view="calendar">🗓 Calendario</button>
+    </div>
+    <div class="view-panels">
+      <div class="view-panel active" id="view-kanban">
+        <div class="panel-mock">
+          <div class="pm-kanban">
+            <div class="pmk-col">
+              <div class="pmk-head" style="color:#ff6a00">Por Hacer <span>3</span></div>
+              <div class="pmk-item">Diseño de homepage</div>
+              <div class="pmk-item">Propuesta cliente</div>
+              <div class="pmk-item">Revisión legal</div>
+            </div>
+            <div class="pmk-col">
+              <div class="pmk-head" style="color:#f0b429">En Proceso <span>2</span></div>
+              <div class="pmk-item pmk-hot">Backend API <span class="pmk-badge">Activo</span></div>
+              <div class="pmk-item">Testing QA</div>
+            </div>
+            <div class="pmk-col">
+              <div class="pmk-head" style="color:#52c41a">Completado <span>4</span></div>
+              <div class="pmk-item pmk-done">Wireframes ✓</div>
+              <div class="pmk-item pmk-done">Base de datos ✓</div>
+              <div class="pmk-item pmk-done">Auth module ✓</div>
+              <div class="pmk-item pmk-done">Diseño UX ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="view-panel" id="view-timeline">
+        <div class="panel-mock">
+          <div class="pm-timeline">
+            <div class="pmt-header">
+              <div class="pmt-col-name">Tarea</div>
+              <div class="pmt-months"><span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span></div>
+            </div>
+            <div class="pmt-row"><div class="pmt-name">Diseño UX</div><div class="pmt-track"><div class="pmt-bar" style="left:0%;width:25%;background:linear-gradient(90deg,#ff6a00,#e62e00)"></div></div></div>
+            <div class="pmt-row"><div class="pmt-name">Desarrollo</div><div class="pmt-track"><div class="pmt-bar" style="left:22%;width:42%;background:linear-gradient(90deg,#7c3aed,#4f46e5)"></div></div></div>
+            <div class="pmt-row"><div class="pmt-name">Testing</div><div class="pmt-track"><div class="pmt-bar" style="left:58%;width:24%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div></div>
+            <div class="pmt-row"><div class="pmt-name">Lanzamiento</div><div class="pmt-track"><div class="pmt-bar" style="left:80%;width:15%;background:linear-gradient(90deg,#10b981,#059669)"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="view-panel" id="view-lista">
+        <div class="panel-mock">
+          <div class="pm-list">
+            <div class="pml-header"><span>Tarea</span><span>Asignado</span><span>Fecha</span><span>Estado</span></div>
+            <div class="pml-row"><span>Diseño de homepage</span><span class="pml-av">ED</span><span class="pml-date">15 Ene</span><span class="pml-tag done">✓ Hecho</span></div>
+            <div class="pml-row pml-hl"><span>Integración de pagos</span><span class="pml-av">MR</span><span class="pml-date">28 Ene</span><span class="pml-tag prog">⚡ Proceso</span></div>
+            <div class="pml-row"><span>Pruebas de usuario</span><span class="pml-av">AL</span><span class="pml-date">10 Feb</span><span class="pml-tag pend">· Pendiente</span></div>
+            <div class="pml-row"><span>Documentación API</span><span class="pml-av">JC</span><span class="pml-date">20 Feb</span><span class="pml-tag pend">· Pendiente</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="view-panel" id="view-calendar">
+        <div class="panel-mock">
+          <div class="pm-cal">
+            <div class="pmc-nav"><button>‹</button><strong>Enero 2025</strong><button>›</button></div>
+            <div class="pmc-grid">
+              <div class="pmc-dn">L</div><div class="pmc-dn">M</div><div class="pmc-dn">X</div><div class="pmc-dn">J</div><div class="pmc-dn">V</div><div class="pmc-dn">S</div><div class="pmc-dn">D</div>
+              <div class="pmc-d"></div><div class="pmc-d">1</div><div class="pmc-d">2</div><div class="pmc-d">3</div>
+              <div class="pmc-d has-e">4<div class="pmc-ev">Review</div></div>
+              <div class="pmc-d">5</div><div class="pmc-d">6</div>
+              <div class="pmc-d">7</div><div class="pmc-d">8</div><div class="pmc-d">9</div>
+              <div class="pmc-d has-e">10<div class="pmc-ev e2">Demo</div></div>
+              <div class="pmc-d">11</div><div class="pmc-d">12</div><div class="pmc-d">13</div>
+              <div class="pmc-d pmc-today">14</div>
+              <div class="pmc-d">15</div>
+              <div class="pmc-d has-e">16<div class="pmc-ev e3">Sprint</div></div>
+              <div class="pmc-d">17</div><div class="pmc-d">18</div><div class="pmc-d">19</div><div class="pmc-d">20</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DASHBOARD ═════════════════════════════════════════ -->
+<section class="section" id="dashboard">
+  <div class="container">
+    <div class="dashboard-layout">
+      <div class="dash-text reveal">
+        <span class="sec-tag">Dashboard</span>
+        <h2>Centro de Mando <span class="gradient-text">Total</span></h2>
+        <p>Una vista ejecutiva diseñada para la toma de decisiones rápida sin ruido visual. Visualiza todos tus proyectos en tiempo real.</p>
+        <ul class="dash-list">
+          <li><span class="chk">✓</span> Métricas en tiempo real</li>
+          <li><span class="chk">✓</span> Gráficas interactivas</li>
+          <li><span class="chk">✓</span> Alertas automáticas</li>
+          <li><span class="chk">✓</span> Exportación a PDF / Excel</li>
+        </ul>
+        <a href="#prueba" class="btn">Ver demo en vivo →</a>
+      </div>
+      <div class="dashboard-mockup reveal">
+        <div class="metric-card dash-card-full">
+          <div class="dash-top">
+            <span>📊 Resumen del Proyecto</span>
+            <span class="dash-chip">Esta semana</span>
+          </div>
+          <div class="dash-metrics">
+            <div class="metric-card">
+              <div class="metric-number" style="color:#ff6a00">78</div>
+              <div class="metric-label">Total tareas</div>
+              <div class="mtrend up">↑ 12%</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-number" style="color:#52c41a">33</div>
+              <div class="metric-label">Completadas</div>
+              <div class="mtrend up">↑ 8%</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-number active">24</div>
+              <div class="metric-label">En Proceso</div>
+              <div class="mtrend neu">→ 0%</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-number" style="color:#e62e00">21</div>
+              <div class="metric-label">Pendientes</div>
+              <div class="mtrend dn">↓ 5%</div>
+            </div>
+          </div>
+          <div class="dash-prog">
+            <div class="dp-lbl"><span>Progreso general</span><span>42%</span></div>
+            <div class="dp-track"><div class="dp-fill" style="width:42%"></div></div>
+          </div>
+          <div class="dash-feed">
+            <div class="feed-item"><span class="fd green-dot"></span><span>Juan completó "Diseño UI"</span><span class="ft">hace 2h</span></div>
+            <div class="feed-item"><span class="fd yellow-dot"></span><span>María inició "Testing QA"</span><span class="ft">hace 4h</span></div>
+            <div class="feed-item"><span class="fd red-dot"></span><span>Alerta: "Backend" sin actualizar</span><span class="ft">hace 1d</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMPARISON ════════════════════════════════════════ -->
+<section class="section comparison-section" id="comparison">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Comparativa</span>
+      <h2>¿Por qué <span class="gradient-text">Monira</span>?</h2>
+      <p>Comparamos lo que realmente importa para equipos en México</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th class="feat-th">Característica</th>
+            <th class="monira-th">Monira 🏆</th>
+            <th>Otros</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Facturación en MXN</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
+          <tr><td>Soporte en español nativo</td><td class="monira-td"><span class="yes">✓ Nativo</span></td><td><span class="partial">Parcial o ninguno</span></td></tr>
+          <tr><td>Factura CFDI incluida</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
+          <tr><td>Vista Kanban</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="neutral">✓ Básico</span></td></tr>
+          <tr><td>Timeline / Gantt incluido</td><td class="monira-td"><span class="yes">✓ Incluido</span></td><td><span class="partial">Solo en planes premium</span></td></tr>
+          <tr><td>Integración WhatsApp</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
+          <tr><td>IA integrada sin costo extra</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="partial">Premium adicional</span></td></tr>
+          <tr><td>Migración automática desde otras plataformas</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
+          <tr class="price-row">
+            <td>Costo estimado por usuario/mes</td>
+            <td class="monira-td price-highlight">$20 MXN</td>
+            <td><span class="price-other">~$150–200 MXN</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="comp-note reveal">* Comparativa basada en planes estándar de plataformas de gestión de proyectos disponibles en el mercado global.</p>
+  </div>
+</section>
+
+<!-- ══ PRICING ═══════════════════════════════════════════ -->
+<section class="section pricing-section" id="pricing">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Precios</span>
+      <h2>Simple y <span class="gradient-text">transparente</span></h2>
+      <p>Sin letra pequeña. Sin sorpresas. Todo en pesos mexicanos.</p>
+    </div>
+    <div class="pricing-toggle reveal">
+      <span class="tgl-lbl active" id="lbl-m">Mensual</span>
+      <div class="tgl-switch" id="priceTgl"><div class="tgl-knob"></div></div>
+      <span class="tgl-lbl" id="lbl-a">Anual <span class="save-badge">Ahorra 15%</span></span>
+    </div>
+    <div class="pricing-table">
+      <div class="price-card reveal">
+        <h3>Estándar</h3>
+        <p class="price-desc">Para equipos comenzando</p>
+        <div class="price">
+          <span class="pcur">$</span><span class="pnum" id="p-std">200</span>
+          <span class="pper">MXN / mes</span>
+        </div>
+        <ul>
+          <li>Hasta 10 usuarios</li>
+          <li>Gestión de tareas Kanban</li>
+          <li>Todas las vistas incluidas</li>
+          <li>Dashboard de métricas</li>
+          <li>Soporte por chat (L–V)</li>
+          <li>Factura CFDI</li>
+        </ul>
+        <a href="#prueba" class="btn full-btn btn-outline">Empezar gratis</a>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="pop-badge">★ Más Popular</div>
+        <h3>Pro</h3>
+        <p class="price-desc">Para equipos en crecimiento</p>
+        <div class="price">
+          <span class="pcur">$</span><span class="pnum" id="p-pro">300</span>
+          <span class="pper">MXN / mes</span>
+        </div>
+        <ul>
+          <li>Hasta 20 usuarios</li>
+          <li>Todo lo de Estándar</li>
+          <li>Timeline y Gantt</li>
+          <li>Reportes avanzados con IA</li>
+          <li>Integración WhatsApp</li>
+          <li>Soporte prioritario 4h</li>
+        </ul>
+        <a href="#prueba" class="btn full-btn">Elegir Pro →</a>
+      </div>
+      <div class="price-card reveal">
+        <h3>Expansión</h3>
+        <p class="price-desc">Añade usuarios a cualquier plan</p>
+        <div class="price">
+          <span class="pcur">+$</span><span class="pnum" id="p-exp">100</span>
+          <span class="pper">MXN / mes</span>
+        </div>
+        <ul>
+          <li>+10 usuarios adicionales</li>
+          <li>Se suma a tu plan base</li>
+          <li>Sin límite de expansiones</li>
+          <li>Mismos beneficios del plan</li>
+        </ul>
+        <a href="#prueba" class="btn full-btn btn-outline">Cotizar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════════════════════ -->
+<section class="section testi-section">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">Testimonios</span>
+      <h2>Equipos que <span class="gradient-text">crecieron</span> con Monira</h2>
+    </div>
+    <div class="testi-carousel">
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"Migramos desde otra plataforma y ahorramos más del 60% en costos. El soporte en español es increíble — resolvieron todo en menos de 24 horas."</p>
+          <div class="testi-author">
+            <div class="tav">MG</div>
+            <div><strong>María González</strong><span>CEO, TechMX Solutions</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"La integración con WhatsApp cambió todo para nuestro equipo. Recibimos notificaciones de tareas directamente en el canal que ya usamos."</p>
+          <div class="testi-author">
+            <div class="tav">CR</div>
+            <div><strong>Carlos Ramírez</strong><span>Director de Ops, InnovaLab</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"Por fin una herramienta que factura en MXN con CFDI. Nuestro contador está feliz y el equipo nunca fue más productivo."</p>
+          <div class="testi-author">
+            <div class="tav">AL</div>
+            <div><strong>Ana Lozano</strong><span>CFO, Grupo Expansión Norte</span></div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="stars">★★★★★</div>
+          <p>"Las vistas múltiples son lo que nos hizo elegir Monira. El equipo técnico usa lista, los managers el dashboard y el cliente el Gantt."</p>
+          <div class="testi-author">
+            <div class="tav">JH</div>
+            <div><strong>Jorge Herrera</strong><span>PM Lead, StartupMX</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-controls">
+        <button class="tcar-btn" id="tPrev">←</button>
+        <div class="tcar-dots" id="tDots"></div>
+        <button class="tcar-btn" id="tNext">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ════════════════════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="sec-header reveal">
+      <span class="sec-tag">FAQ</span>
+      <h2>Preguntas <span class="gradient-text">frecuentes</span></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Puedo importar mis proyectos de otras plataformas? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>Sí. Monira incluye herramientas de migración automática. El proceso toma menos de 10 minutos y no pierdes ningún dato.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Hay contrato de permanencia? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>No. Cancela en cualquier momento sin penalizaciones. Plan mensual = factura mensual. Plan anual = 15% de descuento al inicio del período.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Qué incluye el soporte? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>Todos los planes incluyen soporte por chat en español de lunes a viernes. El plan Pro incluye soporte prioritario con respuesta máxima de 4 horas.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Mis datos están seguros? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>Cifrado AES-256, cumplimiento LFPDPPP y backups diarios automáticos con retención de 30 días. Tus datos nunca salen de México.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Monira tiene aplicación móvil? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>Sí. Apps nativas para iOS y Android, más una PWA que funciona sin conexión. Tu equipo puede gestionar tareas desde cualquier lugar.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q">¿Cómo funciona la prueba gratuita? <span class="faq-ico">+</span></button>
+        <div class="faq-a"><p>30 días con acceso completo al plan Pro. Sin tarjeta de crédito. Al finalizar eliges el plan que mejor se adapta a tu equipo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══════════════════════════════════════════ -->
+<section class="cta-section" id="prueba">
+  <div class="container">
+    <h2 class="reveal">Centraliza. Gestiona. <span class="gradient-text">Crece.</span></h2>
+    <p class="reveal">Únete a más de 500 empresas mexicanas que ya gestionan mejor con Monira</p>
+    <div class="cta-form reveal">
+      <input type="email" class="cta-input" placeholder="tu@empresa.com">
+      <button class="btn cta-submit">Solicita tu prueba gratuita de 30 días →</button>
+    </div>
+    <div class="cta-checks reveal">
+      <span>✓ 30 días gratis</span>
+      <span>✓ Sin tarjeta de crédito</span>
+      <span>✓ Cancela cuando quieras</span>
+    </div>
+    <div class="discount-badge reveal">🎉 15% de descuento en pago anual</div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
         <div class="logo">
           <img src="Monira-removebg-preview.png" alt="Monira" class="logo-img">
           Monira
         </div>
-        <a href="#prueba" class="btn">Prueba gratuita</a>
-      </nav>
+        <p>La plataforma de gestión operativa diseñada para México.</p>
+        <div class="social-row">
+          <a href="#" class="soc-btn">in</a>
+          <a href="#" class="soc-btn">𝕏</a>
+          <a href="#" class="soc-btn">ig</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <ul>
+          <li><a href="#features">Funciones</a></li>
+          <li><a href="#pricing">Precios</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Recursos</h4>
+        <ul>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Guías</a></li>
+          <li><a href="#">API Docs</a></li>
+          <li><a href="#">Centro de ayuda</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="#">Aviso de Privacidad</a></li>
+          <li><a href="#">Términos de Servicio</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
     </div>
-  </header>
-
-  <div class="container">
-
-    <section class="hero">
-      <h1>Monira: Propuesta Integral de Gestión Operativa para México</h1>
-      <p>
-        La alternativa competitiva diseñada para la realidad de las empresas en México.
-        Elimina la complejidad innecesaria.
-      </p>
-      <a href="#prueba" class="btn">Prueba gratuita de 30 días</a>
-    </section>
-
-    <section class="features">
-
-      <div class="feature-card reveal">
-        <div class="icon">💰</div>
-        <h3>Economía</h3>
-        <p>Facturación en MXN sin riesgo cambiario. Sin costos ocultos.</p>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="icon">🤝</div>
-        <h3>Soporte Humano</h3>
-        <p>Contacto directo con desarrolladores, no bots. Soporte en tu idioma.</p>
-      </div>
-
-      <div class="feature-card reveal">
-        <div class="icon">🛡️</div>
-        <h3>Seguridad</h3>
-        <p>Protección avanzada de datos y roles personalizados.</p>
-      </div>
-
-    </section>
-
-    <section class="dashboard-section">
-      <h2 class="reveal">Centro de Mando</h2>
-      <p class="reveal">Una vista ejecutiva diseñada para la toma de decisiones rápida sin ruido visual.</p>
-
-      <div class="dashboard-mockup">
-
-        <div class="metric-card reveal">
-          <div class="metric-number">78</div>
-          <div class="metric-label">Total</div>
-        </div>
-
-        <div class="metric-card reveal">
-          <div class="metric-number">33</div>
-          <div class="metric-label">Completado</div>
-        </div>
-
-        <div class="metric-card reveal">
-          <div class="metric-number active">24</div>
-          <div class="metric-label">En Proceso</div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="pricing-section">
-      <h2 class="reveal">Esquema de Precios</h2>
-
-      <div class="pricing-table">
-
-        <div class="price-card featured reveal">
-          <h3>Estándar</h3>
-          <div class="price">$200 <span>MXN / mes</span></div>
-
-          <ul>
-            <li>Hasta 10 usuarios</li>
-            <li>Gestión de tareas y Kanban</li>
-            <li>Todas las vistas incluidas</li>
-          </ul>
-
-          <a href="#" class="btn full-btn">Elegir Plan</a>
-        </div>
-
-        <div class="price-card reveal">
-          <h3>Paquete de Expansión</h3>
-          <div class="price">+$100 <span>MXN</span></div>
-
-          <p class="small-text">Ideal para equipos en crecimiento</p>
-
-          <ul>
-            <li>Añade 10 usuarios adicionales</li>
-            <li>Se suma a tu plan base</li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
+    <div class="footer-bottom">
+      <p>© 2025 Monira. Todos los derechos reservados. Hecho con ❤️ en México.</p>
+      <p class="footer-tagline">Centraliza · Gestiona · Crece</p>
+    </div>
   </div>
+</footer>
 
-  <footer id="prueba">
-    <div class="container">
-      <h2 class="reveal">Centraliza. Gestiona. Crece.</h2>
-      <p class="reveal">Monira: Tu operación, bajo control.</p>
-      <a href="#prueba" class="btn reveal">Solicita tu prueba gratuita de 30 días</a>
-      <br>
-      <div class="discount-badge reveal">15% de descuento en pago anual</div>
-    </div>
-  </footer>
-
-  <script src="main.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
