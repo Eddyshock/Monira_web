@@ -259,6 +259,100 @@ footer p {
   color: var(--primary);
 }
 
+/* ============================================
+   ANIMACIONES — Estilo: Dark SaaS / Micro-interaction
+   Referencia visual: Linear, Vercel, Raycast dark landing pages
+   Filosofía: cada animación tiene un propósito funcional
+   (dirección de atención, feedback, jerarquía visual)
+============================================ */
+
+/* 1. fadeInUp — Entrada del hero al cargar página */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+.hero p {
+  animation: fadeInUp 0.7s ease 0.15s both;
+}
+
+/* 2. countUp — Entrada visual de métricas (el conteo real requiere JS) */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.metric-number {
+  animation: countUp 0.6s ease forwards;
+}
+
+/* 3. cardLift — Hover en feature cards con sombra naranja */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(255, 106, 0, 0.18);
+}
+
+/* 4. gradientShift — Gradiente animado en logo y botón */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.logo {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.btn {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* 5. pulseGlow — Glow pulsante en el botón CTA del hero */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.4); }
+  50%       { box-shadow: 0 0 20px 8px rgba(255, 106, 0, 0.12); }
+}
+
+.hero .btn {
+  animation: fadeInUp 0.7s ease 0.3s both, pulseGlow 2.5s ease-in-out 1.2s infinite;
+}
+
+/* 6. scrollReveal — Añadir clase .reveal a elementos para fade al hacer scroll */
+/* Requiere JS: observer.observe(el) → el.classList.add('reveal') */
+@keyframes scrollReveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.visible {
+  animation: scrollReveal 0.6s ease forwards;
+}
+
+/* 7. floatIcon — Flotación suave en íconos de feature cards */
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.icon {
+  display: inline-block;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 768px) {
