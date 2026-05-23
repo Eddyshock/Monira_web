@@ -32,20 +32,45 @@ body {
 
 /* NAV */
 
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease;
+}
+
+.site-header.scrolled {
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: var(--border-color);
+}
+
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--border-color);
+  padding: 20px 0;
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 24px;
   font-weight: 700;
   background: linear-gradient(90deg, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 /* BOTÓN */
@@ -260,47 +285,68 @@ footer p {
 }
 
 /* ============================================
-   ANIMACIONES — Estilo: Dark SaaS / Micro-interaction
-   Referencia visual: Linear, Vercel, Raycast dark landing pages
-   Filosofía: cada animación tiene un propósito funcional
-   (dirección de atención, feedback, jerarquía visual)
+   ANIMACIONES — Dark SaaS / Micro-interaction
 ============================================ */
 
-/* 1. fadeInUp — Entrada del hero al cargar página */
+/* AMBIENT BACKGROUND GLOW */
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 0.9; }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(255, 106, 0, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientPulse 7s ease-in-out infinite;
+}
+
+.container,
+footer { position: relative; z-index: 1; }
+
+/* SCROLL REVEAL — base */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger escalonado por posición en el grid */
+.feature-card.reveal:nth-child(2),
+.metric-card.reveal:nth-child(2),
+.price-card.reveal:nth-child(2)  { transition-delay: 0.13s; }
+
+.feature-card.reveal:nth-child(3),
+.metric-card.reveal:nth-child(3) { transition-delay: 0.26s; }
+
+/* HERO — entrada escalonada */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(36px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 .hero h1 {
-  animation: fadeInUp 0.7s ease forwards;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .hero p {
-  animation: fadeInUp 0.7s ease 0.15s both;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
 }
 
-/* 2. countUp — Entrada visual de métricas (el conteo real requiere JS) */
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.metric-number {
-  animation: countUp 0.6s ease forwards;
-}
-
-/* 3. cardLift — Hover en feature cards con sombra naranja */
-.feature-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(255, 106, 0, 0.18);
-}
-
-/* 4. gradientShift — Gradiente animado en logo y botón */
+/* GRADIENT animado en logo y botones */
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
@@ -309,48 +355,88 @@ footer p {
 
 .logo {
   background-size: 200% 200%;
-  animation: gradientShift 4s ease infinite;
+  animation: gradientShift 5s ease infinite;
 }
 
 .btn {
   background-size: 200% 200%;
-  animation: gradientShift 3s ease infinite;
+  animation: gradientShift 3.5s ease infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* 5. pulseGlow — Glow pulsante en el botón CTA del hero */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255, 106, 0, 0.35);
+}
+
+/* PULSE GLOW — CTA principal del hero */
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 106, 0, 0.4); }
-  50%       { box-shadow: 0 0 20px 8px rgba(255, 106, 0, 0.12); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 106, 0, 0); }
+  50%       { box-shadow: 0 0 28px 8px rgba(255, 106, 0, 0.2); }
 }
 
 .hero .btn {
-  animation: fadeInUp 0.7s ease 0.3s both, pulseGlow 2.5s ease-in-out 1.2s infinite;
+  animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.36s both,
+             pulseGlow 3s ease-in-out 1.3s infinite,
+             gradientShift 3.5s ease infinite;
 }
 
-/* 6. scrollReveal — Añadir clase .reveal a elementos para fade al hacer scroll */
-/* Requiere JS: observer.observe(el) → el.classList.add('reveal') */
-@keyframes scrollReveal {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* FEATURE CARDS — hover lift + glow + reveal */
+.feature-card {
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
 }
 
-.reveal {
-  opacity: 0;
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 48px rgba(255, 106, 0, 0.15);
+  border-color: var(--primary);
 }
 
-.reveal.visible {
-  animation: scrollReveal 0.6s ease forwards;
-}
-
-/* 7. floatIcon — Flotación suave en íconos de feature cards */
+/* FLOAT ICON — íconos flotantes con stagger */
 @keyframes floatIcon {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
 }
 
 .icon {
   display: inline-block;
-  animation: floatIcon 3s ease-in-out infinite;
+  animation: floatIcon 3.2s ease-in-out infinite;
+}
+
+.feature-card:nth-child(2) .icon { animation-delay: 0.5s; }
+.feature-card:nth-child(3) .icon { animation-delay: 1s; }
+
+/* METRIC CARDS — hover + reveal */
+.metric-card {
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(255, 106, 0, 0.1);
+  border-color: var(--border-color);
+}
+
+/* PRICE CARDS — hover lift + featured glow permanente */
+.price-card {
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease;
+}
+
+.price-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(255, 106, 0, 0.12);
+}
+
+.price-card.featured {
+  box-shadow: 0 0 0 1px var(--primary), 0 8px 32px rgba(255, 106, 0, 0.1);
 }
 
 /* RESPONSIVE */
