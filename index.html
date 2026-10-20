@@ -3,613 +3,943 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monira – Gestión Operativa para México</title>
+  <title>Monira – Gestión de tareas y proyectos para tu operación</title>
+  <meta name="description" content="Organiza las actividades de tu equipo por módulo, tarjeta y área. Ve qué venció, qué toca hoy y el avance de cada módulo en Lista, Kanban, Gantt o Tabla.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/png" href="Monira-removebg-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
-<!-- ══ HEADER ══════════════════════════════════════════ -->
-<header class="site-header" id="header">
-  <div class="container">
-    <nav>
-      <div class="logo">
-        <img src="Monira-removebg-preview.png" alt="Monira" class="logo-img">
-        Monira
-      </div>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#features">Funciones</a></li>
-        <li><a href="#how-it-works">Proceso</a></li>
-        <li><a href="#comparison">Comparativa</a></li>
-        <li><a href="#pricing">Precios</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
-      <a href="#prueba" class="btn btn-nav">Prueba gratuita</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-        <span></span><span></span><span></span>
-      </button>
+<!-- ══ ICONOS ════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 0 1-12.4 7.5L3.5 20.5l1.1-4.3A8.5 8.5 0 1 1 20.5 12z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.7 1.8 1.8.7-1.8.7L19 20l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+  <symbol id="i-kanban" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M9 8v8M15 8v5"/></symbol>
+  <symbol id="i-gantt" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M7 9h6M9 12.5h8M7 16h5"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
+  <symbol id="i-tasks" viewBox="0 0 24 24"><path d="M4 7l2 2 3-3M4 16l2 2 3-3M12 8h8M12 17h8"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 6h11M5 11h8M5 16h5"/><path d="M14 20l6-6 1.5 1.5-6 6H14z"/></symbol>
+  <symbol id="i-boards" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><path d="M16.75 13.5v6.5M13.5 16.75H20"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 10h17M9.5 10v9"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-calcheck" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15l2 2 4-4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-dotsc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></symbol>
+  <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/></symbol>
+  <symbol id="i-checkc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-chevl" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-chevd" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-6 7-6s6.2 2.4 7 6"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 21V4M6 4h11l-2 4 2 4H6"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 0 1 3-3h13"/><path d="M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 0 1-3 3H4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M6 12h.01M12 12h.01M18 12h.01"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6 7.5V19l-4 1v-7.5z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5z"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M12 5v14M7 14l5 5 5-5"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-6M3 20h18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+</svg>
+
+<a class="skip-link" href="#funciones">Saltar al contenido</a>
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+<!-- ══ NAV ═══════════════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#inicio" class="brand" aria-label="Monira, ir al inicio">
+      <img src="Monira-removebg-preview.png" alt="" width="30" height="30">
+      <span>Monira</span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Secciones">
+      <span class="nav-pill" aria-hidden="true"></span>
+      <a href="#funciones">Funciones</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#vistas">Vistas</a>
+      <a href="#comparativa">Ahorro</a>
+      <a href="#precios">Precios</a>
+      <a href="#faq">FAQ</a>
     </nav>
+    <a href="#prueba" class="btn btn-primary btn-sm nav-cta">Prueba gratis</a>
+    <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
   </div>
 </header>
 
-<!-- ══ HERO ═════════════════════════════════════════════ -->
-<section class="hero" id="home">
-  <div class="container hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-pulse"></span>
-        🇲🇽 Diseñado para México
-      </div>
-      <h1>Gestión de Proyectos<br><span class="gradient-text">Sin Límites</span></h1>
-      <p>Lo mejor de las plataformas líderes — unificado en una sola herramienta diseñada para la realidad operativa de México. Sin costos en dólares. Sin complejidad innecesaria.</p>
-      <div class="hero-ctas">
-        <a href="#prueba" class="btn">Prueba gratuita de 30 días</a>
-        <a href="#how-it-works" class="btn btn-outline">Ver cómo funciona →</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hstat"><span class="hstat-n">500+</span><span class="hstat-l">Empresas</span></div>
-        <div class="hstat-sep"></div>
-        <div class="hstat"><span class="hstat-n">98%</span><span class="hstat-l">Satisfacción</span></div>
-        <div class="hstat-sep"></div>
-        <div class="hstat"><span class="hstat-n">3×</span><span class="hstat-l">Productividad</span></div>
-      </div>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true" inert>
+  <nav aria-label="Menú móvil">
+    <a href="#funciones" style="--i:0"><small>01</small>Funciones</a>
+    <a href="#proceso" style="--i:1"><small>02</small>Cómo funciona</a>
+    <a href="#vistas" style="--i:2"><small>03</small>Vistas</a>
+    <a href="#comparativa" style="--i:3"><small>04</small>Ahorro</a>
+    <a href="#precios" style="--i:4"><small>05</small>Precios</a>
+    <a href="#faq" style="--i:5"><small>06</small>FAQ</a>
+  </nav>
+  <a href="#prueba" class="btn btn-primary btn-lg mm-cta" style="--i:6">Empieza gratis 30 días</a>
+</div>
+
+<main>
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="container hero-copy">
+    <a href="#precios" class="hero-badge">
+      <span class="badge-dot"></span>
+      Monira beta · Hecho en México
+      <span class="badge-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span>
+    </a>
+
+    <h1 class="hero-title">
+      <span class="sr-only">Gestiona tus actividades y las de tu equipo sin caos, sin complicaciones, sin costos ocultos y sin letra pequeña</span>
+      <span class="line" aria-hidden="true"><span class="word" style="--i:0">Gestiona</span> <span class="word" style="--i:1">tus</span> <span class="word" style="--i:2">actividades</span></span>
+      <span class="line" aria-hidden="true"><span class="word" style="--i:3">y</span> <span class="word" style="--i:4">las</span> <span class="word" style="--i:5">de</span> <span class="word" style="--i:6">tu</span> <span class="word" style="--i:7">equipo</span></span>
+      <span class="line" aria-hidden="true"><span class="word" style="--i:8">sin</span> <span class="word" style="--i:9"><span class="rotator" id="rotator"><span>caos</span><span>complicaciones</span><span>costos ocultos</span><span>letra pequeña</span></span></span></span>
+    </h1>
+
+    <p class="hero-sub">Lista, Kanban, Gantt y Tabla en una sola plataforma. Cada mañana ves qué venció, qué toca hoy y qué viene en los próximos 7 días.</p>
+
+    <div class="hero-ctas">
+      <a href="#prueba" class="btn btn-primary btn-lg magnetic"><span>Empieza gratis 30 días</span><svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
+      <a href="#vistas" class="btn btn-ghost btn-lg"><span class="play-dot"><svg class="icon"><use href="#i-play"/></svg></span>Pruébalo aquí mismo</a>
     </div>
-    <div class="hero-visual">
-      <div class="app-window">
-        <div class="win-bar">
-          <span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span>
-          <span class="win-title">Monira · Sprint Q2</span>
+
+    <ul class="hero-assure">
+      <li><svg class="icon"><use href="#i-check"/></svg>Sin pago inicial</li>
+      <li><svg class="icon"><use href="#i-check"/></svg>Listo en 5 minutos</li>
+      <li><svg class="icon"><use href="#i-check"/></svg>Cancela cuando quieras</li>
+    </ul>
+  </div>
+
+  <div class="container hero-stage-wrap" aria-hidden="true">
+    <div class="hero-stage" id="heroStage">
+      <div class="app">
+        <div class="app-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="app-url"><svg class="icon"><use href="#i-lock"/></svg>gant-io.web.app</span>
+          <span class="app-bar-sp"></span>
         </div>
-        <div class="win-tabs">
-          <span class="wtab active">Kanban</span>
-          <span class="wtab">Timeline</span>
-          <span class="wtab">Lista</span>
-        </div>
-        <div class="kanban-board">
-          <div class="kb-col">
-            <div class="kb-head todo-h">Por Hacer <em>3</em></div>
-            <div class="kb-card">
-              <span class="card-title">Diseño UI</span>
-              <div class="card-meta"><span class="av">ED</span><span class="pri high">Alta</span></div>
+        <div class="mx app-body">
+          <aside class="mx-side">
+            <div class="mx-logo"><img src="Monira-removebg-preview.png" alt="">Monira<i class="mx-beta">beta</i></div>
+            <span class="mx-nav on"><svg class="icon"><use href="#i-home"/></svg>Inicio</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-tasks"/></svg>Tareas</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-kanban"/></svg>Kanban</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-gantt"/></svg>Gantt</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-note"/></svg>Notas</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-boards"/></svg>Pizarras</span>
+            <span class="mx-nav"><svg class="icon"><use href="#i-table"/></svg>Tabla</span>
+            <span class="mx-new"><svg class="icon"><use href="#i-plus"/></svg>Nueva tarea</span>
+            <span class="mx-user"><b class="av" style="--h:330">AL</b><span>ANA LÓPEZ<small>Miembro</small></span></span>
+          </aside>
+          <div class="mx-main">
+            <div class="mx-top"><span>Inicio</span><span class="mx-bell"><svg class="icon"><use href="#i-bell"/></svg><b id="heroBell">3</b></span></div>
+            <div class="mx-home">
+              <div class="mx-greet"><b>Buenos días, Ana.</b><span>Lunes, 19 de octubre</span></div>
+              <div class="mx-alert"><svg class="icon"><use href="#i-alert"/></svg><span id="heroAlert">Tienes 2 vencidas y 3 actividades para esta semana</span></div>
+              <div class="mx-kpis" id="heroKpis">
+                <div class="mx-kpi is-alert" style="--k:#fa5252" data-k="venc"><span class="ki"><svg class="icon"><use href="#i-alert"/></svg></span><span class="kt"><b>2</b><small>Vencidas</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+                <div class="mx-kpi" style="--k:#adb5bd" data-k="hoy"><span class="ki"><svg class="icon"><use href="#i-cal"/></svg></span><span class="kt"><b>4</b><small>Hoy</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+                <div class="mx-kpi" style="--k:#9775fa" data-k="prox"><span class="ki"><svg class="icon"><use href="#i-calcheck"/></svg></span><span class="kt"><b>6</b><small>Próx. 7 días</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+                <div class="mx-kpi" style="--k:#fab005" data-k="prog"><span class="ki"><svg class="icon"><use href="#i-dotsc"/></svg></span><span class="kt"><b>9</b><small>En proceso</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+                <div class="mx-kpi" style="--k:#868e96" data-k="pend"><span class="ki"><svg class="icon"><use href="#i-circle"/></svg></span><span class="kt"><b>12</b><small>Pendientes</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+                <div class="mx-kpi" style="--k:#40c057" data-k="done"><span class="ki"><svg class="icon"><use href="#i-checkc"/></svg></span><span class="kt"><b>48</b><small>Ejecutadas</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+              </div>
+              <div class="mx-cols">
+                <div class="mx-panel" style="--c:#fa5252">
+                  <div class="mx-ph">Mi día <em id="heroDayN">3</em><span class="mx-btn"><svg class="icon"><use href="#i-user"/></svg>Solo mías</span></div>
+                  <div class="mx-list" id="heroDay">
+                    <div class="mx-item" data-b="venc" data-mod="op">
+                      <span class="mx-ck b-venc"><svg class="icon"><use href="#i-check"/></svg></span>
+                      <span class="mx-title">Checklist de apertura</span>
+                      <svg class="icon mx-chev"><use href="#i-chev"/></svg>
+                      <span class="mx-meta"><i class="mx-p p1">P1</i><i class="mx-mod" style="--c:#4c6ef5">Operaciones</i><i class="mx-who"><svg class="icon"><use href="#i-user"/></svg>Luis +1</i><i class="mx-due due-venc">Venció hace 2 d</i></span>
+                      <span class="mx-bar"><i style="--w:70%"></i></span>
+                    </div>
+                    <div class="mx-item" data-b="hoy" data-mod="an">
+                      <span class="mx-ck b-hoy"><svg class="icon"><use href="#i-check"/></svg></span>
+                      <span class="mx-title">Reporte mensual de resultados</span>
+                      <svg class="icon mx-chev"><use href="#i-chev"/></svg>
+                      <span class="mx-meta"><i class="mx-p p2">P2</i><i class="mx-mod" style="--c:#e64980">Analítica</i><i class="mx-who"><svg class="icon"><use href="#i-user"/></svg>Ana</i><i class="mx-due due-hoy">Vence hoy</i></span>
+                      <span class="mx-bar"><i style="--w:80%"></i></span>
+                    </div>
+                    <div class="mx-item" data-b="hoy" data-mod="com">
+                      <span class="mx-ck b-hoy"><svg class="icon"><use href="#i-check"/></svg></span>
+                      <span class="mx-title">Campaña interna de bienvenida</span>
+                      <svg class="icon mx-chev"><use href="#i-chev"/></svg>
+                      <span class="mx-meta"><i class="mx-p p2">P2</i><i class="mx-mod" style="--c:#9775fa">Comunicación</i><i class="mx-who"><svg class="icon"><use href="#i-user"/></svg>María +2</i><i class="mx-due due-hoy">Vence hoy</i></span>
+                      <span class="mx-bar"><i style="--w:40%"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mx-panel mx-mods" style="--c:#4c6ef5">
+                  <div class="mx-ph">Por módulo <em>5</em></div>
+                  <div class="mx-modgrid" id="heroMods">
+                    <div class="mx-modcard" data-mod="op" style="--c:#4c6ef5"><div class="mx-mh">Operaciones <em>21</em></div><div class="mx-mbar"><span><i style="--w:67%"></i></span><b>67%</b></div><div class="mx-msub"><span class="ex">14</span> ejecutadas · 3 en proceso</div><div class="mx-mchips"><span class="bad"><svg class="icon"><use href="#i-alert"/></svg>1 venc.</span><span class="soon"><svg class="icon"><use href="#i-clock"/></svg>2 próx.</span></div></div>
+                    <div class="mx-modcard" data-mod="com" style="--c:#9775fa"><div class="mx-mh">Comunicación <em>9</em></div><div class="mx-mbar"><span><i style="--w:78%"></i></span><b>78%</b></div><div class="mx-msub"><span class="ex">7</span> ejecutadas · 1 en proceso</div><div class="mx-mchips"><span><svg class="icon"><use href="#i-alert"/></svg>0 venc.</span><span class="soon"><svg class="icon"><use href="#i-clock"/></svg>1 próx.</span></div></div>
+                    <div class="mx-modcard" data-mod="sop" style="--c:#339af0"><div class="mx-mh">Soporte <em>4</em></div><div class="mx-mbar"><span><i style="--w:75%"></i></span><b>75%</b></div><div class="mx-msub"><span class="ex">3</span> ejecutadas · 1 en proceso</div><div class="mx-mchips"><span><svg class="icon"><use href="#i-alert"/></svg>0 venc.</span><span><svg class="icon"><use href="#i-clock"/></svg>0 próx.</span></div></div>
+                    <div class="mx-modcard" data-mod="an" style="--c:#e64980"><div class="mx-mh">Analítica <em>7</em></div><div class="mx-mbar"><span><i style="--w:86%"></i></span><b>86%</b></div><div class="mx-msub"><span class="ex">6</span> ejecutadas · 1 en proceso</div><div class="mx-mchips"><span><svg class="icon"><use href="#i-alert"/></svg>0 venc.</span><span class="soon"><svg class="icon"><use href="#i-clock"/></svg>1 próx.</span></div></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="kb-card">
-              <span class="card-title">Doc. API</span>
-              <div class="card-meta"><span class="av">MR</span><span class="pri med">Media</span></div>
-            </div>
-          </div>
-          <div class="kb-col">
-            <div class="kb-head prog-h">En Proceso <em>2</em></div>
-            <div class="kb-card kb-active">
-              <span class="card-title">Backend Dev</span>
-              <div class="kb-bar-wrap"><div class="kb-bar-fill" style="width:65%"></div></div>
-              <div class="card-meta"><span class="av">AL</span><span class="pri high">Alta</span></div>
-            </div>
-            <div class="kb-card">
-              <span class="card-title">Testing QA</span>
-              <div class="card-meta"><span class="av">JC</span><span class="pri med">Media</span></div>
-            </div>
-          </div>
-          <div class="kb-col">
-            <div class="kb-head done-h">Completado <em>3</em></div>
-            <div class="kb-card kb-done">Diseño UX ✓</div>
-            <div class="kb-card kb-done">BD Setup ✓</div>
-            <div class="kb-card kb-done">Auth ✓</div>
           </div>
         </div>
       </div>
-      <div class="float-chip chip-1"><span class="chip-dot"></span> Tarea completada</div>
-      <div class="float-chip chip-2">⚡ 3 notificaciones</div>
+
+      <div class="chip chip-a" id="heroToast">
+        <span class="chip-ico ci-blue"><svg class="icon"><use href="#i-bell"/></svg></span>
+        <span><b>Nueva tarea asignada</b><small>Ana te asignó «Reporte mensual»</small></span>
+      </div>
+      <div class="chip chip-b">
+        <span class="chip-ico ci-red"><svg class="icon"><use href="#i-alert"/></svg></span>
+        <span><b>Tienes 2 vencidas</b><small>y 3 actividades para esta semana</small></span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══ SOCIAL PROOF ══════════════════════════════════════ -->
-<section class="proof-bar">
-  <div class="container proof-inner">
-    <span class="proof-label">Confían en Monira</span>
-    <div class="proof-logos">
-      <span>TechMX</span><span>Grupo Alfa</span><span>StartupMX</span>
-      <span>InnovaLab</span><span>DigiFlow</span><span>NexoPro</span>
-      <span>BizOps360</span><span>Operativa MX</span>
+<!-- ══ MARQUEE ═══════════════════════════════════════════ -->
+<section class="marquee" aria-label="Dónde funciona Monira y qué incluye">
+  <p class="marquee-label">Todo tu trabajo, en un solo lugar</p>
+  <div class="marquee-viewport">
+    <div class="marquee-track">
+      <ul>
+        <li><i class="mdot" style="--c:#4c6ef5"></i>Web</li>
+        <li><i class="mdot" style="--c:#40c057"></i>Celular</li>
+        <li><i class="mdot" style="--c:#ff6a00"></i>Se instala como app</li>
+        <li><i class="mdot" style="--c:#ffb23f"></i>Panel lateral de Chrome</li>
+        <li><i class="mdot" style="--c:#9775fa"></i>Búsqueda con «mo» en la barra</li>
+        <li><i class="mdot" style="--c:#339af0"></i>Atajos de teclado</li>
+        <li><i class="mdot" style="--c:#e64980"></i>Clic derecho → Crear actividad</li>
+        <li><i class="mdot" style="--c:#fa5252"></i>Contador en el ícono</li>
+        <li><i class="mdot" style="--c:#f6f5f4"></i>Tema claro y oscuro</li>
+      </ul>
+      <ul aria-hidden="true">
+        <li><i class="mdot" style="--c:#4c6ef5"></i>Web</li>
+        <li><i class="mdot" style="--c:#40c057"></i>Celular</li>
+        <li><i class="mdot" style="--c:#ff6a00"></i>Se instala como app</li>
+        <li><i class="mdot" style="--c:#ffb23f"></i>Panel lateral de Chrome</li>
+        <li><i class="mdot" style="--c:#9775fa"></i>Búsqueda con «mo» en la barra</li>
+        <li><i class="mdot" style="--c:#339af0"></i>Atajos de teclado</li>
+        <li><i class="mdot" style="--c:#e64980"></i>Clic derecho → Crear actividad</li>
+        <li><i class="mdot" style="--c:#fa5252"></i>Contador en el ícono</li>
+        <li><i class="mdot" style="--c:#f6f5f4"></i>Tema claro y oscuro</li>
+      </ul>
+    </div>
+    <div class="marquee-track reverse">
+      <ul>
+        <li><svg class="icon"><use href="#i-home"/></svg>Inicio y Mi día</li>
+        <li><svg class="icon"><use href="#i-tasks"/></svg>Lista de tareas</li>
+        <li><svg class="icon"><use href="#i-kanban"/></svg>Kanban</li>
+        <li><svg class="icon"><use href="#i-gantt"/></svg>Gantt</li>
+        <li><svg class="icon"><use href="#i-table"/></svg>Tabla</li>
+        <li><svg class="icon"><use href="#i-note"/></svg>Notas</li>
+        <li><svg class="icon"><use href="#i-boards"/></svg>Pizarras</li>
+        <li><svg class="icon"><use href="#i-list"/></svg>Plan de trabajo</li>
+        <li><svg class="icon"><use href="#i-link"/></svg>Dependencias</li>
+        <li><svg class="icon"><use href="#i-repeat"/></svg>Tareas que se repiten</li>
+        <li><svg class="icon"><use href="#i-chat"/></svg>Comentarios</li>
+        <li><svg class="icon"><use href="#i-bell"/></svg>Notificaciones</li>
+        <li><svg class="icon"><use href="#i-spark"/></svg>45 celebraciones</li>
+      </ul>
+      <ul aria-hidden="true">
+        <li><svg class="icon"><use href="#i-home"/></svg>Inicio y Mi día</li>
+        <li><svg class="icon"><use href="#i-tasks"/></svg>Lista de tareas</li>
+        <li><svg class="icon"><use href="#i-kanban"/></svg>Kanban</li>
+        <li><svg class="icon"><use href="#i-gantt"/></svg>Gantt</li>
+        <li><svg class="icon"><use href="#i-table"/></svg>Tabla</li>
+        <li><svg class="icon"><use href="#i-note"/></svg>Notas</li>
+        <li><svg class="icon"><use href="#i-boards"/></svg>Pizarras</li>
+        <li><svg class="icon"><use href="#i-list"/></svg>Plan de trabajo</li>
+        <li><svg class="icon"><use href="#i-link"/></svg>Dependencias</li>
+        <li><svg class="icon"><use href="#i-repeat"/></svg>Tareas que se repiten</li>
+        <li><svg class="icon"><use href="#i-chat"/></svg>Comentarios</li>
+        <li><svg class="icon"><use href="#i-bell"/></svg>Notificaciones</li>
+        <li><svg class="icon"><use href="#i-spark"/></svg>45 celebraciones</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ══ FEATURES ══════════════════════════════════════════ -->
-<section class="section features-section" id="features">
+<!-- ══ FUNCIONES (BENTO) ═════════════════════════════════ -->
+<section class="section" id="funciones">
   <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Ventajas</span>
-      <h2>Diseñado para <span class="gradient-text">tu realidad</span></h2>
-      <p>Sin costos en dólares, sin soporte genérico, sin complejidad innecesaria</p>
+    <header class="sec-head">
+      <span class="eyebrow">Ventajas</span>
+      <h2 data-split>Diseñado para <em>tu operación</em></h2>
+      <p class="reveal">Módulos, tarjetas y áreas como trabaja tu empresa, con lo urgente siempre arriba.</p>
+    </header>
+
+    <div class="bento">
+      <!-- Tu día -->
+      <article class="cell cell-wide spot reveal">
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-home"/></svg></span>
+          <h3>Tu día, en una mirada</h3>
+          <p>Al abrir Monira ves cuántas actividades vencieron, cuáles tocan hoy y cuáles vienen en los próximos 7 días, más el avance de cada módulo.</p>
+        </div>
+        <div class="cell-vis">
+          <div class="mx mx-day">
+            <div class="mx-kpis k2">
+              <div class="mx-kpi is-alert" style="--k:#fa5252"><span class="ki"><svg class="icon"><use href="#i-alert"/></svg></span><span class="kt"><b data-count="2">0</b><small>Vencidas</small></span></div>
+              <div class="mx-kpi" style="--k:#adb5bd"><span class="ki"><svg class="icon"><use href="#i-cal"/></svg></span><span class="kt"><b data-count="4">0</b><small>Hoy</small></span></div>
+              <div class="mx-kpi" style="--k:#9775fa"><span class="ki"><svg class="icon"><use href="#i-calcheck"/></svg></span><span class="kt"><b data-count="6">0</b><small>Próx. 7 días</small></span></div>
+              <div class="mx-kpi" style="--k:#fab005"><span class="ki"><svg class="icon"><use href="#i-dotsc"/></svg></span><span class="kt"><b data-count="9">0</b><small>En proceso</small></span></div>
+            </div>
+            <div class="mx-modcard grow" style="--c:#4c6ef5"><div class="mx-mh">Operaciones <em>21</em></div><div class="mx-mbar"><span><i style="--w:67%"></i></span><b>67%</b></div><div class="mx-msub">14 ejecutadas · 3 en proceso</div><div class="mx-mchips"><span class="bad"><svg class="icon"><use href="#i-alert"/></svg>1 vencida</span><span class="soon"><svg class="icon"><use href="#i-clock"/></svg>2 próximas</span></div></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Trabajo en equipo -->
+      <article class="cell spot reveal">
+        <div class="cell-vis">
+          <div class="mx mx-sheet" id="chat">
+            <div class="mx-sheet-h"><svg class="icon"><use href="#i-chat"/></svg>Comentarios<svg class="icon x"><use href="#i-x"/></svg></div>
+            <div class="mx-sheet-body">
+              <div class="msg me"><b class="av" style="--h:330">AL</b><span><small>Ana · ahora</small>¿Ya quedó el reporte de cierre?</span></div>
+              <div class="msg-who"><b class="av" style="--h:150">LR</b>Luis · Comentarios</div>
+              <div class="msg them typing"><i></i><i></i><i></i></div>
+              <div class="msg them reply">Listo, lo marqué en el plan de trabajo ✓</div>
+            </div>
+            <div class="mx-sheet-in"><span>Escribe un comentario…</span><svg class="icon"><use href="#i-send"/></svg></div>
+          </div>
+        </div>
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-chat"/></svg></span>
+          <h3>Trabajo en equipo</h3>
+          <p>Asigna varias personas a una actividad, comenta dentro de ella y recibe un aviso cuando alguien te asigna algo.</p>
+        </div>
+      </article>
+
+      <!-- Cada quien ve lo suyo -->
+      <article class="cell spot reveal">
+        <div class="cell-vis">
+          <div class="mx mx-set">
+            <div class="mx-set-h"><b class="av" style="--h:330">AL</b><span><b>Ana López</b><small>ana@gruponorte.mx</small></span><i class="mx-role">Miembro</i></div>
+            <div class="mx-set-row"><span><b>Solo mis tareas</b><small>Ves solo donde eres responsable</small></span><i class="mx-tg"></i></div>
+            <div class="mx-set-row"><span><small>Módulos</small><b class="ok">Operaciones, Analítica</b></span><svg class="icon"><use href="#i-chev"/></svg></div>
+            <div class="mx-set-row"><span><small>Áreas</small><b class="ok">Todas las áreas</b></span><svg class="icon"><use href="#i-chev"/></svg></div>
+          </div>
+          <div class="sec-chips"><span>Roles</span><span>Solo mis tareas</span><span>Módulos y áreas</span></div>
+        </div>
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-shield"/></svg></span>
+          <h3>Cada quien ve lo suyo</h3>
+          <p>Roles, «Solo mis tareas» y visibilidad por módulo y área: cada persona ve lo que le toca, sin ruido.</p>
+        </div>
+      </article>
+
+      <!-- Todo en uno -->
+      <article class="cell spot reveal">
+        <div class="cell-vis">
+          <ul class="mx toggles">
+            <li style="--t:0"><svg class="icon"><use href="#i-tasks"/></svg>Lista<span class="sw"></span></li>
+            <li style="--t:1"><svg class="icon"><use href="#i-kanban"/></svg>Kanban<span class="sw"></span></li>
+            <li style="--t:2"><svg class="icon"><use href="#i-gantt"/></svg>Gantt<span class="sw"></span></li>
+            <li style="--t:3"><svg class="icon"><use href="#i-table"/></svg>Tabla<span class="sw"></span></li>
+            <li style="--t:4"><svg class="icon"><use href="#i-note"/></svg>Notas<span class="sw"></span></li>
+            <li style="--t:5"><svg class="icon"><use href="#i-boards"/></svg>Pizarras<span class="sw"></span></li>
+          </ul>
+        </div>
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-layers"/></svg></span>
+          <h3>Todo en uno</h3>
+          <p>Lista, Kanban, Gantt y Tabla con los mismos datos, más Notas y Pizarras. Sin módulos extra.</p>
+        </div>
+      </article>
+
+      <!-- Monira en tu navegador -->
+      <article class="cell spot reveal">
+        <div class="cell-vis">
+          <div class="mx mx-browser">
+            <div class="mxb-bar"><span class="dots"><i></i><i></i><i></i></span><span class="mxb-url">tu-sistema.com</span><span class="mxb-ext"><b>M</b><i>3</i></span></div>
+            <div class="mxb-body">
+              <div class="mxb-page"><i></i><i></i><i></i><i class="s"></i><i></i><i class="s"></i></div>
+              <div class="mxb-panel">
+                <div class="mxb-ph"><img src="Monira-removebg-preview.png" alt="">Monira</div>
+                <div class="mxb-row new"><i style="--c:#4c6ef5"></i>Cotización proveedor<em>Nueva</em></div>
+                <div class="mxb-row"><i style="--c:#e64980"></i>Reporte mensual<em class="hoy">Hoy</em></div>
+                <div class="mxb-row"><i style="--c:#4c6ef5"></i>Checklist de apertura<em class="venc">Venció</em></div>
+                <div class="mxb-row"><i style="--c:#9775fa"></i>Campaña interna</div>
+              </div>
+            </div>
+          </div>
+          <div class="mxb-keys"><kbd>⌥N</kbd>Nueva actividad<kbd>⌥B</kbd>Buscar</div>
+        </div>
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-link"/></svg></span>
+          <h3>Monira en tu navegador</h3>
+          <p>Panel lateral en Chrome, atajos de teclado y clic derecho para crear una actividad con el texto que seleccionas. También se instala como app.</p>
+        </div>
+      </article>
+
+      <!-- Celebra cada avance -->
+      <article class="cell cell-wide spot reveal">
+        <div class="cell-text">
+          <span class="cell-ico"><svg class="icon"><use href="#i-spark"/></svg></span>
+          <h3>Celebra cada avance</h3>
+          <p>Cuando completas una actividad, Monira lo celebra con una de 45 animaciones. O con ninguna: tú eliges.</p>
+        </div>
+        <div class="cell-vis">
+          <div class="mx mx-cele" id="cele">
+            <div class="mxc-top"><span>TSK-0042</span><i class="mx-p p2">P2</i><i class="mx-st st-prog" id="celeSt">En proceso</i></div>
+            <div class="mxc-path">MÓDULO <b style="--c:#e64980">Analítica</b> › TARJETA <b>Reportes</b></div>
+            <h5 id="celeTitle">Reporte mensual de resultados</h5>
+            <div class="mx-mbar"><span><i id="celeBar" style="--w:80%"></i></span><b id="celeN">80%</b></div>
+            <div class="mxc-plan">
+              <div class="mxc-ph"><svg class="icon"><use href="#i-list"/></svg>Plan de trabajo <em id="celePlan">4/5</em></div>
+              <div class="mxc-more"><svg class="icon"><use href="#i-chevd"/></svg>Ver 3 completadas</div>
+              <div class="mxc-step done"><i><svg class="icon"><use href="#i-check"/></svg></i>Gráficas por sucursal</div>
+              <div class="mxc-step" id="celeLast"><i><svg class="icon"><use href="#i-check"/></svg></i>Enviar a dirección</div>
+            </div>
+            <div class="mxc-actions"><button type="button" class="mxc-btn" id="celeBtn">Completar actividad</button><span class="mxc-tag" id="celeTag" aria-live="polite"></span></div>
+          </div>
+        </div>
+      </article>
     </div>
-    <div class="features">
-      <div class="feature-card reveal">
-        <div class="icon">💰</div>
-        <h3>Economía Real</h3>
-        <p>Facturación en MXN sin riesgo cambiario. Precios fijos. Factura CFDI incluida.</p>
-        <span class="feat-link">Conocer más →</span>
+  </div>
+</section>
+
+<!-- ══ CÓMO FUNCIONA (STICKY) ════════════════════════════ -->
+<section class="section process" id="proceso">
+  <div class="container">
+    <header class="sec-head">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2 data-split>Empieza en <em>3 pasos</em></h2>
+      <p class="reveal">De cero a productivo en minutos, no en semanas.</p>
+    </header>
+
+    <div class="process-grid">
+      <div class="process-stage" aria-hidden="true">
+        <div class="stage-frame" id="stageFrame" data-step="1">
+          <div class="stage-glow"></div>
+
+          <!-- Paso 1: estructura -->
+          <div class="stage-screen active" data-screen="1">
+            <div class="mx mx-card mx-struct">
+              <div class="mxs-h">Así se organiza tu operación</div>
+              <div class="mxs-row" style="--d:0"><span class="mxs-k">MÓDULO</span><b class="mx-mod" style="--c:#4c6ef5">Operaciones</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">TARJETA</span><b>Tiendas</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">ÁREA</span><b>Apertura</b></div>
+              <div class="mxs-row" style="--d:1"><span class="mxs-k">MÓDULO</span><b class="mx-mod" style="--c:#9775fa">Comunicación</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">TARJETA</span><b>Campañas</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">ÁREA</span><b>Interna</b></div>
+              <div class="mxs-row" style="--d:2"><span class="mxs-k">MÓDULO</span><b class="mx-mod" style="--c:#e64980">Analítica</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">TARJETA</span><b>Reportes</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">ÁREA</span><b>Dirección</b></div>
+              <div class="mxs-row" style="--d:3"><span class="mxs-k">MÓDULO</span><b class="mx-mod" style="--c:#fd7e14">Capacitación</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">TARJETA</span><b>Cursos</b><svg class="icon"><use href="#i-chev"/></svg><span class="mxs-k">ÁREA</span><b>Nuevo ingreso</b></div>
+              <div class="mxs-sub">Equipo</div>
+              <div class="mxs-people">
+                <span style="--d:4"><b class="av" style="--h:330">AL</b>Ana López<i class="mx-role">Admin</i></span>
+                <span style="--d:5"><b class="av" style="--h:150">LR</b>Luis Ramos<i class="mx-role">Miembro</i></span>
+                <span style="--d:6"><b class="av" style="--h:280">MR</b>María Ruiz<i class="mx-role">Miembro</i></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 2: nueva actividad -->
+          <div class="stage-screen" data-screen="2">
+            <div class="mx mx-card mx-form">
+              <div class="mxf-h"><svg class="icon"><use href="#i-x"/></svg>Nueva actividad</div>
+              <div class="mxf-name"><span id="typeTask"></span><i class="caret"></i></div>
+              <div class="mxf-row" style="--d:0"><span class="mxf-k"><svg class="icon"><use href="#i-target"/></svg>DÓNDE</span><span class="mxf-v"><i class="mx-mod" style="--c:#e64980">Analítica</i><i>Reportes</i><i>Dirección</i></span></div>
+              <div class="mxf-row" style="--d:1"><span class="mxf-k"><svg class="icon"><use href="#i-flag"/></svg>ESTADO</span><span class="mxf-v"><i><svg class="icon"><use href="#i-circle"/></svg>Pendiente</i><i class="mx-p p2">P2 · Media</i></span></div>
+              <div class="mxf-row" style="--d:2"><span class="mxf-k"><svg class="icon"><use href="#i-cal"/></svg>CUÁNDO</span><span class="mxf-v"><i>19 oct – 31 oct</i><i><svg class="icon"><use href="#i-repeat"/></svg>Cada mes</i></span></div>
+              <div class="mxf-row" style="--d:3"><span class="mxf-k"><svg class="icon"><use href="#i-user"/></svg>QUIÉN</span><span class="mxf-v"><i><b class="av" style="--h:330">AL</b>Ana López</i><i class="add">+ Agregar</i></span></div>
+              <div class="mxf-row" style="--d:4"><span class="mxf-k"><svg class="icon"><use href="#i-link"/></svg>RELACIÓN</span><span class="mxf-v"><i>Depende de «Juntar cifras de ventas»</i></span></div>
+              <div class="mxf-foot">
+                <span class="mxf-check">Para crearla <b id="formCount">4 de 4</b></span>
+                <span class="mxf-btn">Crear actividad</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3: seguimiento -->
+          <div class="stage-screen" data-screen="3">
+            <div class="mx mx-card mx-follow">
+              <div class="mx-kpis k3">
+                <div class="mx-kpi is-alert" style="--k:#fa5252"><span class="ki"><svg class="icon"><use href="#i-alert"/></svg></span><span class="kt"><b>2</b><small>Vencidas</small></span></div>
+                <div class="mx-kpi" style="--k:#adb5bd"><span class="ki"><svg class="icon"><use href="#i-cal"/></svg></span><span class="kt"><b>4</b><small>Hoy</small></span></div>
+                <div class="mx-kpi" style="--k:#9775fa"><span class="ki"><svg class="icon"><use href="#i-calcheck"/></svg></span><span class="kt"><b>6</b><small>Próx. 7 días</small></span></div>
+              </div>
+              <div class="mx-ph" style="--c:#4c6ef5">Por módulo <em>5</em></div>
+              <div class="mx-modgrid">
+                <div class="mx-modcard" style="--c:#4c6ef5;--d:0"><div class="mx-mh">Operaciones <em>21</em></div><div class="mx-mbar"><span><i style="--w:67%"></i></span><b>67%</b></div><div class="mx-msub">14 ejecutadas · 3 en proceso</div></div>
+                <div class="mx-modcard" style="--c:#9775fa;--d:1"><div class="mx-mh">Comunicación <em>9</em></div><div class="mx-mbar"><span><i style="--w:78%"></i></span><b>78%</b></div><div class="mx-msub">7 ejecutadas · 1 en proceso</div></div>
+                <div class="mx-modcard" style="--c:#339af0;--d:2"><div class="mx-mh">Soporte <em>4</em></div><div class="mx-mbar"><span><i style="--w:75%"></i></span><b>75%</b></div><div class="mx-msub">3 ejecutadas · 1 en proceso</div></div>
+                <div class="mx-modcard" style="--c:#e64980;--d:3"><div class="mx-mh">Analítica <em>7</em></div><div class="mx-mbar"><span><i style="--w:100%"></i></span><b>100%</b></div><div class="mx-msub">7 ejecutadas · 0 en proceso</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="feature-card reveal">
-        <div class="icon">🤝</div>
-        <h3>Soporte Humano</h3>
-        <p>Contacto directo con el equipo de desarrollo. Soporte en español, sin bots ni esperas.</p>
-        <span class="feat-link">Conocer más →</span>
+
+      <ol class="process-steps" id="processSteps">
+        <li class="rail" aria-hidden="true"><i></i></li>
+        <li class="pstep active">
+          <span class="pnum">01</span>
+          <h3>Ordena tu operación</h3>
+          <p>Acomoda el trabajo en módulos, tarjetas y áreas, igual que está organizada tu empresa. Cada persona entra con su rol.</p>
+          <ul class="pmeta"><li><svg class="icon"><use href="#i-layers"/></svg>Módulos, tarjetas y áreas</li><li><svg class="icon"><use href="#i-user"/></svg>Roles</li></ul>
+        </li>
+        <li class="pstep">
+          <span class="pnum">02</span>
+          <h3>Crea y asigna actividades</h3>
+          <p>Cada actividad lleva responsables, prioridad de P1 a P3, fechas, un plan de trabajo paso a paso y, si hace falta, de qué otra depende. Las recurrentes se repiten solas.</p>
+          <ul class="pmeta"><li><svg class="icon"><use href="#i-list"/></svg>Plan de trabajo</li><li><svg class="icon"><use href="#i-repeat"/></svg>Se repite sola</li></ul>
+        </li>
+        <li class="pstep">
+          <span class="pnum">03</span>
+          <h3>Da seguimiento</h3>
+          <p>Inicio te dice qué venció y qué toca hoy, el Gantt muestra fechas y dependencias, y cada módulo enseña su porcentaje de avance.</p>
+          <ul class="pmeta"><li><svg class="icon"><use href="#i-alert"/></svg>Vencidas y próximas</li><li><svg class="icon"><use href="#i-chart"/></svg>Avance por módulo</li></ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VISTAS (DEMO INTERACTIVA) ═════════════════════════ -->
+<section class="section views-section" id="vistas">
+  <div class="container">
+    <header class="sec-head">
+      <span class="eyebrow">Vistas</span>
+      <h2 data-split>Tu trabajo, <em>como quieras verlo</em></h2>
+      <p class="reveal">Lista, Kanban, Gantt y Tabla muestran las mismas actividades: cambia de vista con un clic. Anda, pruébalo: arrastra las tarjetas.</p>
+    </header>
+
+    <div class="views reveal" id="viewsDemo">
+      <div class="tabs" role="tablist" aria-label="Vistas de Monira">
+        <span class="tab-pill" aria-hidden="true"></span>
+        <button class="tab active" role="tab" id="t-kanban" aria-controls="v-kanban" aria-selected="true"><svg class="icon"><use href="#i-kanban"/></svg>Kanban<i class="tab-timer"></i></button>
+        <button class="tab" role="tab" id="t-gantt" aria-controls="v-gantt" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-gantt"/></svg>Gantt<i class="tab-timer"></i></button>
+        <button class="tab" role="tab" id="t-lista" aria-controls="v-lista" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-tasks"/></svg>Lista<i class="tab-timer"></i></button>
+        <button class="tab" role="tab" id="t-tabla" aria-controls="v-tabla" aria-selected="false" tabindex="-1"><svg class="icon"><use href="#i-table"/></svg>Tabla<i class="tab-timer"></i></button>
       </div>
-      <div class="feature-card reveal">
-        <div class="icon">🛡️</div>
-        <h3>Seguridad Total</h3>
-        <p>Roles y permisos granulares. Cumplimiento LFPDPPP. Backups diarios automáticos.</p>
-        <span class="feat-link">Conocer más →</span>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">⚡</div>
-        <h3>Todo en Uno</h3>
-        <p>Kanban, Gantt, listas, calendario y reportes — dentro de una sola plataforma integrada.</p>
-        <span class="feat-link">Conocer más →</span>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">🔗</div>
-        <h3>Integraciones</h3>
-        <p>Conecta con WhatsApp, SAT, CFDI, Slack y tus herramientas favoritas sin esfuerzo.</p>
-        <span class="feat-link">Conocer más →</span>
-      </div>
-      <div class="feature-card reveal">
-        <div class="icon">🤖</div>
-        <h3>IA Integrada</h3>
-        <p>Análisis inteligente de proyectos con insights accionables en tiempo real.</p>
-        <span class="feat-link">Conocer más →</span>
+
+      <div class="vwin mx">
+        <div class="vwin-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="vwin-title">Operación · <b id="vwinView">Kanban</b></span>
+          <span class="vwin-hint" id="dragHint"><svg class="icon"><use href="#i-grip"/></svg>Arrastra las tarjetas</span>
+        </div>
+        <div class="vtool">
+          <span class="vt-search"><svg class="icon"><use href="#i-search"/></svg>Buscar actividad, tarjeta, responsable…</span>
+          <span class="vt-chip on">Todas <em>8</em></span>
+          <span class="vt-chip">Pendientes <em>3</em></span>
+          <span class="vt-chip">Hoy <em>2</em></span>
+          <span class="vt-chip bad">Vencidas <em>1</em></span>
+          <span class="vt-ico"><svg class="icon"><use href="#i-filter"/></svg></span>
+        </div>
+
+        <div class="vpanels">
+          <!-- Kanban -->
+          <div class="vpanel active" id="v-kanban" role="tabpanel" aria-labelledby="t-kanban">
+            <div class="vk" id="vkBoard">
+              <div class="vk-col" data-col="campanas" style="--c:#9775fa">
+                <div class="vk-h"><svg class="icon g"><use href="#i-grip"/></svg><svg class="icon g"><use href="#i-chevl"/></svg><i class="cdot"></i>Campañas<em>2</em><svg class="icon g"><use href="#i-open"/></svg></div>
+                <div class="vk-list">
+                  <div class="vk-card" tabindex="0" style="--c:#9775fa">
+                    <div class="vk-top"><span>TSK-0412</span><i class="mx-p p2">P2</i><i class="mx-st st-prog">En proceso</i></div>
+                    <h5>Campaña interna de bienvenida</h5>
+                    <div class="vk-meta"><span class="vk-due">Vence hoy</span><span class="vk-av"><b class="av" style="--h:280">MR</b><b class="av" style="--h:330">AL</b></span></div>
+                    <div class="vk-subs"><div class="vk-sh"><svg class="icon"><use href="#i-list"/></svg>Sub-actividades<em>1/3</em></div><div class="vk-sbar"><i style="--w:33%"></i></div>
+                      <button type="button" class="vk-sub done"><i><svg class="icon"><use href="#i-check"/></svg></i>Diseñar cartel</button>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Enviar correo a sucursales</button>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Medir respuesta</button>
+                    </div>
+                  </div>
+                  <div class="vk-card" tabindex="0" style="--c:#9775fa">
+                    <div class="vk-top"><span>TSK-0418</span><i class="mx-p p3">P3</i><i class="mx-st st-pend">Pendiente</i></div>
+                    <h5>Encuesta de clima laboral</h5>
+                    <div class="vk-meta"><span class="vk-due soon">Vence en 5 d</span><span class="vk-av"><b class="av" style="--h:280">MR</b></span></div>
+                    <div class="vk-subs"><div class="vk-sh"><svg class="icon"><use href="#i-list"/></svg>Sub-actividades<em>0/2</em></div><div class="vk-sbar"><i style="--w:0%"></i></div>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Redactar preguntas</button>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Publicar encuesta</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="vk-add"><svg class="icon"><use href="#i-plus"/></svg>Nueva actividad</div>
+              </div>
+              <div class="vk-col" data-col="reportes" style="--c:#e64980">
+                <div class="vk-h"><svg class="icon g"><use href="#i-grip"/></svg><svg class="icon g"><use href="#i-chevl"/></svg><i class="cdot"></i>Reportes<em>1</em><svg class="icon g"><use href="#i-open"/></svg></div>
+                <div class="vk-list">
+                  <div class="vk-card" tabindex="0" style="--c:#e64980">
+                    <div class="vk-top"><span>TSK-0390</span><i class="mx-p p1">P1</i><i class="mx-st st-prog">En proceso</i></div>
+                    <h5>Reporte mensual de resultados</h5>
+                    <div class="vk-meta"><span class="vk-due bad">Vence hoy</span><span class="vk-av"><b class="av" style="--h:330">AL</b></span></div>
+                    <div class="vk-subs"><div class="vk-sh"><svg class="icon"><use href="#i-list"/></svg>Sub-actividades<em>2/3</em></div><div class="vk-sbar"><i style="--w:67%"></i></div>
+                      <button type="button" class="vk-sub done"><i><svg class="icon"><use href="#i-check"/></svg></i>Juntar cifras de ventas</button>
+                      <button type="button" class="vk-sub done"><i><svg class="icon"><use href="#i-check"/></svg></i>Gráficas por sucursal</button>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Enviar a dirección</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="vk-add"><svg class="icon"><use href="#i-plus"/></svg>Nueva actividad</div>
+              </div>
+              <div class="vk-col" data-col="capacitacion" style="--c:#fd7e14">
+                <div class="vk-h"><svg class="icon g"><use href="#i-grip"/></svg><svg class="icon g"><use href="#i-chevl"/></svg><i class="cdot"></i>Capacitación<em>2</em><svg class="icon g"><use href="#i-open"/></svg></div>
+                <div class="vk-list">
+                  <div class="vk-card" tabindex="0" style="--c:#fd7e14">
+                    <div class="vk-top"><span>TSK-0401</span><i class="mx-p p2">P2</i><i class="mx-st st-pend">Pendiente</i></div>
+                    <h5>Capacitación del equipo nuevo</h5>
+                    <div class="vk-meta"><span class="vk-due soon">Vence en 3 d</span><span class="vk-av"><b class="av" style="--h:100">SG</b><b class="av" style="--h:150">LR</b></span></div>
+                    <div class="vk-subs"><div class="vk-sh"><svg class="icon"><use href="#i-list"/></svg>Sub-actividades<em>0/2</em></div><div class="vk-sbar"><i style="--w:0%"></i></div>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Agendar sesión</button>
+                      <button type="button" class="vk-sub"><i><svg class="icon"><use href="#i-check"/></svg></i>Preparar material</button>
+                    </div>
+                  </div>
+                  <div class="vk-card is-done" tabindex="0" style="--c:#fd7e14">
+                    <div class="vk-top"><span>TSK-0377</span><i class="mx-p p3">P3</i><i class="mx-st st-done">Ejecutado</i></div>
+                    <h5>Manual de bienvenida</h5>
+                    <div class="vk-meta"><span class="vk-due ok">Hecho</span><span class="vk-av"><b class="av" style="--h:20">ED</b></span></div>
+                    <div class="vk-subs"><div class="vk-sh"><svg class="icon"><use href="#i-list"/></svg>Sub-actividades<em>2/2</em></div><div class="vk-sbar"><i style="--w:100%"></i></div>
+                      <button type="button" class="vk-sub done"><i><svg class="icon"><use href="#i-check"/></svg></i>Redactar manual</button>
+                      <button type="button" class="vk-sub done"><i><svg class="icon"><use href="#i-check"/></svg></i>Revisión de RH</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="vk-add"><svg class="icon"><use href="#i-plus"/></svg>Nueva actividad</div>
+              </div>
+            </div>
+            <p class="vk-kbd"><span class="kbd-desk">Arrastra tarjetas entre columnas y palomea sub-actividades. Con teclado: flechas ← → para mover.</span><span class="kbd-touch">Mantén presionada una tarjeta para moverla; toca una sub-actividad para palomearla.</span></p>
+          </div>
+
+          <!-- Gantt -->
+          <div class="vpanel" id="v-gantt" role="tabpanel" aria-labelledby="t-gantt">
+            <div class="gt">
+              <div class="gt-tool">
+                <span class="gt-nav"><b><svg class="icon"><use href="#i-chevl"/></svg></b><b class="today"><svg class="icon"><use href="#i-target"/></svg>Hoy</b><b><svg class="icon"><use href="#i-chev"/></svg></b></span>
+                <span class="gt-range"><svg class="icon"><use href="#i-cal"/></svg>12 oct – 1 nov 2026<svg class="icon"><use href="#i-chevd"/></svg></span>
+                <span class="gt-seg"><b class="on">D</b><b>S</b><b>M</b></span>
+                <span class="gt-group">Agrupar: Módulo<svg class="icon"><use href="#i-chevd"/></svg></span>
+              </div>
+              <div class="gt-mini"><span class="gt-mini-l"><b>8 actividades</b><small>Arrastra para moverte</small></span><span class="gt-mini-map"><i style="--l:4%;--w:22%;--c:#4c6ef5"></i><i style="--l:14%;--w:30%;--c:#9775fa"></i><i style="--l:30%;--w:18%;--c:#e64980"></i><i style="--l:52%;--w:26%;--c:#fd7e14"></i><i style="--l:66%;--w:20%;--c:#4c6ef5"></i><b class="win"></b></span></div>
+              <div class="gt-grid" id="gtGrid">
+                <div class="gt-head"><span class="gt-name">Actividad</span><span class="gt-days" id="gtDays"></span></div>
+                <div class="gt-body" id="gtBody">
+                  <span class="gt-today" aria-hidden="true"><b>HOY</b></span>
+                  <svg class="gt-deps" id="gtDeps" aria-hidden="true"></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista -->
+          <div class="vpanel" id="v-lista" role="tabpanel" aria-labelledby="t-lista">
+            <div class="ls" id="lsList">
+              <div class="ls-count">6 actividades</div>
+            </div>
+            <p class="vk-kbd">Toca los círculos para marcar actividades como hechas.</p>
+          </div>
+
+          <!-- Tabla -->
+          <div class="vpanel" id="v-tabla" role="tabpanel" aria-labelledby="t-tabla">
+            <div class="tb-wrap">
+              <table class="tb" id="tbTable">
+                <thead>
+                  <tr>
+                    <th data-k="title" data-t="s">Actividad<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="st" data-t="s">Estatus<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="p" data-t="s">Prioridad<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="prog" data-t="n">Progreso<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="ini" data-t="n">Inicio<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="fin" data-t="n" class="sorted asc">Fin<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="who" data-t="s">Responsables<svg class="icon"><use href="#i-sort"/></svg></th>
+                    <th data-k="mod" data-t="s">Módulo<svg class="icon"><use href="#i-sort"/></svg></th>
+                  </tr>
+                </thead>
+                <tbody id="tbBody"></tbody>
+              </table>
+            </div>
+            <p class="vk-kbd">Haz clic en un encabezado para ordenar.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ STATS ══════════════════════════════════════════════ -->
-<section class="stats-band">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item reveal">
-        <div class="stat-wrap">
-          <span class="stat-num" data-target="500">0</span><span class="stat-sfx">+</span>
+<!-- ══ INICIO (TELÉFONO) ═════════════════════════════════ -->
+<section class="section dash-section" id="dashboard">
+  <div class="container dash-grid">
+    <div class="dash-copy">
+      <span class="eyebrow">Inicio</span>
+      <h2 data-split>Todo lo urgente, <em>arriba</em></h2>
+      <p class="reveal">Al abrir Monira ves lo que venció, lo que toca hoy y lo que viene esta semana, más el avance de cada módulo. Sin buscar.</p>
+      <ul class="dash-list reveal" data-stagger="90">
+        <li><span class="chk"><svg class="icon"><use href="#i-check"/></svg></span>Vencidas, hoy y próximos 7 días</li>
+        <li><span class="chk"><svg class="icon"><use href="#i-check"/></svg></span>«Mi día» con lo que te toca</li>
+        <li><span class="chk"><svg class="icon"><use href="#i-check"/></svg></span>Avance por módulo en %</li>
+        <li><span class="chk"><svg class="icon"><use href="#i-check"/></svg></span>Aviso cuando te asignan algo</li>
+      </ul>
+      <a href="#prueba" class="btn btn-ghost btn-lg reveal">Solicitar una demo <svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
+    </div>
+
+    <div class="phone-wrap reveal">
+      <div class="phone mx" id="phone">
+        <div class="ph-notch"></div>
+        <div class="ph-top"><b>Inicio</b><span class="ph-icons"><b class="av" style="--h:330">AL</b><span class="mx-bell"><svg class="icon"><use href="#i-bell"/></svg><b>3</b></span></span></div>
+        <div class="ph-scroll" id="phScroll">
+          <div class="mx-greet"><b>Buenos días, Ana.</b><span>Lunes, 19 de octubre</span></div>
+          <div class="mx-alert"><svg class="icon"><use href="#i-alert"/></svg><span>Tienes 2 vencidas y 3 actividades para esta semana</span></div>
+          <div class="mx-kpis k2" id="phKpis">
+            <div class="mx-kpi is-alert" style="--k:#fa5252"><span class="ki"><svg class="icon"><use href="#i-alert"/></svg></span><span class="kt"><b data-count="2">0</b><small>Vencidas</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+            <div class="mx-kpi" style="--k:#adb5bd"><span class="ki"><svg class="icon"><use href="#i-cal"/></svg></span><span class="kt"><b data-count="4">0</b><small>Hoy</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+            <div class="mx-kpi" style="--k:#9775fa"><span class="ki"><svg class="icon"><use href="#i-calcheck"/></svg></span><span class="kt"><b data-count="6">0</b><small>Próx. 7 días</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+            <div class="mx-kpi" style="--k:#fab005"><span class="ki"><svg class="icon"><use href="#i-dotsc"/></svg></span><span class="kt"><b data-count="9">0</b><small>En proceso</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+            <div class="mx-kpi" style="--k:#868e96"><span class="ki"><svg class="icon"><use href="#i-circle"/></svg></span><span class="kt"><b data-count="12">0</b><small>Pendientes</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+            <div class="mx-kpi" style="--k:#40c057"><span class="ki"><svg class="icon"><use href="#i-checkc"/></svg></span><span class="kt"><b data-count="48" id="phDone">0</b><small>Ejecutadas</small></span><svg class="icon kc"><use href="#i-chev"/></svg></div>
+          </div>
+          <div class="mx-panel" style="--c:#fa5252">
+            <div class="mx-ph">Mi día <em id="phDayN">4</em><button type="button" class="mx-btn" id="phMine" aria-pressed="false"><svg class="icon"><use href="#i-user"/></svg>Solo mías</button></div>
+            <div class="mx-list" id="phDay">
+              <div class="mx-item" data-mine="0"><button type="button" class="mx-ck b-venc" aria-label="Completar"><svg class="icon"><use href="#i-check"/></svg></button><span class="mx-title">Checklist de apertura</span><svg class="icon mx-chev"><use href="#i-chev"/></svg><span class="mx-meta"><i class="mx-p p1">P1</i><i class="mx-mod" style="--c:#4c6ef5">Operaciones</i><i class="mx-due due-venc">Venció hace 2 d</i></span><span class="mx-bar"><i style="--w:70%"></i></span></div>
+              <div class="mx-item" data-mine="1"><button type="button" class="mx-ck b-hoy" aria-label="Completar"><svg class="icon"><use href="#i-check"/></svg></button><span class="mx-title">Reporte mensual de resultados</span><svg class="icon mx-chev"><use href="#i-chev"/></svg><span class="mx-meta"><i class="mx-p p2">P2</i><i class="mx-mod" style="--c:#e64980">Analítica</i><i class="mx-due due-hoy">Vence hoy</i></span><span class="mx-bar"><i style="--w:80%"></i></span></div>
+              <div class="mx-item" data-mine="0"><button type="button" class="mx-ck b-hoy" aria-label="Completar"><svg class="icon"><use href="#i-check"/></svg></button><span class="mx-title">Campaña interna de bienvenida</span><svg class="icon mx-chev"><use href="#i-chev"/></svg><span class="mx-meta"><i class="mx-p p2">P2</i><i class="mx-mod" style="--c:#9775fa">Comunicación</i><i class="mx-due due-hoy">Vence hoy</i></span><span class="mx-bar"><i style="--w:40%"></i></span></div>
+              <div class="mx-item" data-mine="1"><button type="button" class="mx-ck b-venc" aria-label="Completar"><svg class="icon"><use href="#i-check"/></svg></button><span class="mx-title">Actualizar tablero de indicadores</span><svg class="icon mx-chev"><use href="#i-chev"/></svg><span class="mx-meta"><i class="mx-p p2">P2</i><i class="mx-mod" style="--c:#e64980">Analítica</i><i class="mx-due due-venc">Venció hace 1 d</i></span><span class="mx-bar"><i style="--w:55%"></i></span></div>
+            </div>
+          </div>
+          <div class="mx-panel" style="--c:#4c6ef5">
+            <div class="mx-ph">Por módulo <em>5</em></div>
+            <div class="mx-modgrid">
+              <div class="mx-modcard" style="--c:#4c6ef5"><div class="mx-mh">Operaciones <em>21</em></div><div class="mx-mbar"><span><i style="--w:67%"></i></span><b>67%</b></div><div class="mx-msub">14 ejecutadas · 3 en proceso</div></div>
+              <div class="mx-modcard" style="--c:#9775fa"><div class="mx-mh">Comunicación <em>9</em></div><div class="mx-mbar"><span><i style="--w:78%"></i></span><b>78%</b></div><div class="mx-msub">7 ejecutadas · 1 en proceso</div></div>
+              <div class="mx-modcard" style="--c:#339af0"><div class="mx-mh">Soporte <em>4</em></div><div class="mx-mbar"><span><i style="--w:75%"></i></span><b>75%</b></div><div class="mx-msub">3 ejecutadas · 1 en proceso</div></div>
+              <div class="mx-modcard" style="--c:#e64980"><div class="mx-mh">Analítica <em>7</em></div><div class="mx-mbar"><span><i style="--w:100%"></i></span><b>100%</b></div><div class="mx-msub">7 ejecutadas · 0 en proceso</div></div>
+            </div>
+          </div>
         </div>
-        <div class="stat-label">Empresas activas</div>
+        <span class="ph-fab"><svg class="icon"><use href="#i-plus"/></svg></span>
+        <nav class="ph-nav"><span class="on"><svg class="icon"><use href="#i-home"/></svg>Inicio</span><span><svg class="icon"><use href="#i-tasks"/></svg>Tareas</span><span><svg class="icon"><use href="#i-kanban"/></svg>Kanban</span><span><svg class="icon"><use href="#i-gantt"/></svg>Gantt</span><span><svg class="icon"><use href="#i-more"/></svg>Más</span></nav>
       </div>
-      <div class="stat-item reveal">
-        <div class="stat-wrap">
-          <span class="stat-num" data-target="98">0</span><span class="stat-sfx">%</span>
-        </div>
-        <div class="stat-label">Tasa de satisfacción</div>
-      </div>
-      <div class="stat-item reveal">
-        <div class="stat-wrap">
-          <span class="stat-num" data-target="40">0</span><span class="stat-sfx">%</span>
-        </div>
-        <div class="stat-label">Reducción en tiempo de gestión</div>
-      </div>
-      <div class="stat-item reveal">
-        <div class="stat-wrap">
-          <span class="stat-num" data-target="10000">0</span><span class="stat-sfx">+</span>
-        </div>
-        <div class="stat-label">Tareas completadas diariamente</div>
-      </div>
+      <p class="phone-hint">Toca un círculo para completar una actividad o «Solo mías» para filtrar.</p>
     </div>
   </div>
 </section>
 
-<!-- ══ HOW IT WORKS ══════════════════════════════════════ -->
-<section class="section" id="how-it-works">
+<!-- ══ AHORRO / COMPARATIVA ══════════════════════════════ -->
+<section class="section" id="comparativa">
   <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Proceso</span>
-      <h2>Empieza en <span class="gradient-text">3 pasos</span></h2>
-      <p>De cero a productivo en minutos, no semanas</p>
+    <header class="sec-head">
+      <span class="eyebrow">Comparativa</span>
+      <h2 data-split>¿Por qué <em>Monira</em>?</h2>
+      <p class="reveal">Calcula cuánto ahorra tu equipo y compara lo que realmente importa en México.</p>
+    </header>
+
+    <div class="calc reveal">
+      <div class="calc-in">
+        <label for="users" class="calc-q">¿Cuántas personas hay en tu equipo?</label>
+        <div class="calc-users"><output id="usersOut" for="users">15</output><span>personas</span></div>
+        <input type="range" id="users" class="range" min="2" max="100" value="15" aria-describedby="calcPlanWrap">
+        <div class="range-scale" aria-hidden="true"><span>2</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        <p class="calc-plan" id="calcPlanWrap">Plan sugerido: <b id="calcPlan">Pro</b></p>
+      </div>
+      <div class="calc-out">
+        <div class="calc-row">
+          <div class="calc-row-h"><span>Otras plataformas</span><b id="costOther">$0</b></div>
+          <div class="calc-bar other"><i id="barOther"></i></div>
+          <small id="perOther">≈ $175 por persona</small>
+        </div>
+        <div class="calc-row monira">
+          <div class="calc-row-h"><span><img src="Monira-removebg-preview.png" alt="">Monira</span><b id="costMonira">$0</b></div>
+          <div class="calc-bar"><i id="barMonira"></i></div>
+          <small id="perMonira">≈ $20 por persona</small>
+        </div>
+        <div class="calc-save">
+          <span>Ahorras al año</span>
+          <strong id="saveYear">$0</strong>
+          <small>MXN · estimado</small>
+        </div>
+      </div>
     </div>
-    <div class="steps-grid">
-      <div class="step-card reveal">
-        <div class="step-num">01</div>
-        <div class="step-emoji">🏗️</div>
-        <h3>Crea tu espacio</h3>
-        <p>Registra tu empresa, invita a tu equipo y configura tu workspace en menos de 5 minutos. Sin tarjeta de crédito.</p>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step-card reveal">
-        <div class="step-num">02</div>
-        <div class="step-emoji">📋</div>
-        <h3>Organiza proyectos</h3>
-        <p>Crea tableros Kanban, timelines o listas. Asigna responsables, fechas y prioridades con un clic.</p>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step-card reveal">
-        <div class="step-num">03</div>
-        <div class="step-emoji">📈</div>
-        <h3>Mide y mejora</h3>
-        <p>Monitorea el avance en tiempo real desde tu dashboard. Reportes automáticos para decisiones con datos.</p>
-      </div>
+
+    <div class="compare reveal" data-stagger="50" role="table" aria-label="Comparativa de Monira con otras plataformas">
+      <div class="cmp-row cmp-head" role="row"><span role="columnheader">Característica</span><span role="columnheader" class="cmp-m"><img src="Monira-removebg-preview.png" alt="">Monira</span><span role="columnheader">Otros</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Facturación en MXN</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="n"><svg class="icon"><use href="#i-x"/></svg></span></div>
+      <div class="cmp-row" role="row"><span role="cell">Todo en español</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="p">Parcial o ninguno</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Factura CFDI incluida</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="n"><svg class="icon"><use href="#i-x"/></svg></span></div>
+      <div class="cmp-row" role="row"><span role="cell">Lista, Kanban, Gantt y Tabla con los mismos datos</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="p">Varía</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Gantt con dependencias y línea «Hoy»</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg>Incluido</span><span role="cell" class="p">Solo en planes premium</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Plan de trabajo dentro de cada actividad</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="p">Varía</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Pizarras: mapa mental, organigrama, SWOT</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="p">Varía</span></div>
+      <div class="cmp-row" role="row"><span role="cell">Panel lateral en el navegador</span><span role="cell" class="cmp-m y"><svg class="icon"><use href="#i-check"/></svg></span><span role="cell" class="p">Varía</span></div>
+      <div class="cmp-row cmp-price" role="row"><span role="cell">Costo por usuario al mes</span><span role="cell" class="cmp-m">$20 MXN</span><span role="cell" class="p">~$150–200 MXN</span></div>
     </div>
+    <p class="note reveal">* Estimación basada en planes estándar de plataformas de gestión de proyectos del mercado global (~$150–200 MXN por usuario al mes; la calculadora usa $175 como referencia).</p>
   </div>
 </section>
 
-<!-- ══ VIEWS SHOWCASE ════════════════════════════════════ -->
-<section class="section views-section">
+<!-- ══ PRECIOS ═══════════════════════════════════════════ -->
+<section class="section pricing-section" id="precios">
   <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Vistas</span>
-      <h2>Tu trabajo, <span class="gradient-text">como quieras verlo</span></h2>
-      <p>Cambia entre vistas con un clic sin perder ningún dato</p>
-    </div>
-    <div class="view-tabs reveal">
-      <button class="view-tab active" data-view="kanban">🗂 Kanban</button>
-      <button class="view-tab" data-view="timeline">📅 Timeline</button>
-      <button class="view-tab" data-view="lista">📋 Lista</button>
-      <button class="view-tab" data-view="calendar">🗓 Calendario</button>
-    </div>
-    <div class="view-panels">
-      <div class="view-panel active" id="view-kanban">
-        <div class="panel-mock">
-          <div class="pm-kanban">
-            <div class="pmk-col">
-              <div class="pmk-head" style="color:#ff6a00">Por Hacer <span>3</span></div>
-              <div class="pmk-item">Diseño de homepage</div>
-              <div class="pmk-item">Propuesta cliente</div>
-              <div class="pmk-item">Revisión legal</div>
-            </div>
-            <div class="pmk-col">
-              <div class="pmk-head" style="color:#f0b429">En Proceso <span>2</span></div>
-              <div class="pmk-item pmk-hot">Backend API <span class="pmk-badge">Activo</span></div>
-              <div class="pmk-item">Testing QA</div>
-            </div>
-            <div class="pmk-col">
-              <div class="pmk-head" style="color:#52c41a">Completado <span>4</span></div>
-              <div class="pmk-item pmk-done">Wireframes ✓</div>
-              <div class="pmk-item pmk-done">Base de datos ✓</div>
-              <div class="pmk-item pmk-done">Auth module ✓</div>
-              <div class="pmk-item pmk-done">Diseño UX ✓</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="view-panel" id="view-timeline">
-        <div class="panel-mock">
-          <div class="pm-timeline">
-            <div class="pmt-header">
-              <div class="pmt-col-name">Tarea</div>
-              <div class="pmt-months"><span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span></div>
-            </div>
-            <div class="pmt-row"><div class="pmt-name">Diseño UX</div><div class="pmt-track"><div class="pmt-bar" style="left:0%;width:25%;background:linear-gradient(90deg,#ff6a00,#e62e00)"></div></div></div>
-            <div class="pmt-row"><div class="pmt-name">Desarrollo</div><div class="pmt-track"><div class="pmt-bar" style="left:22%;width:42%;background:linear-gradient(90deg,#7c3aed,#4f46e5)"></div></div></div>
-            <div class="pmt-row"><div class="pmt-name">Testing</div><div class="pmt-track"><div class="pmt-bar" style="left:58%;width:24%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div></div></div>
-            <div class="pmt-row"><div class="pmt-name">Lanzamiento</div><div class="pmt-track"><div class="pmt-bar" style="left:80%;width:15%;background:linear-gradient(90deg,#10b981,#059669)"></div></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="view-panel" id="view-lista">
-        <div class="panel-mock">
-          <div class="pm-list">
-            <div class="pml-header"><span>Tarea</span><span>Asignado</span><span>Fecha</span><span>Estado</span></div>
-            <div class="pml-row"><span>Diseño de homepage</span><span class="pml-av">ED</span><span class="pml-date">15 Ene</span><span class="pml-tag done">✓ Hecho</span></div>
-            <div class="pml-row pml-hl"><span>Integración de pagos</span><span class="pml-av">MR</span><span class="pml-date">28 Ene</span><span class="pml-tag prog">⚡ Proceso</span></div>
-            <div class="pml-row"><span>Pruebas de usuario</span><span class="pml-av">AL</span><span class="pml-date">10 Feb</span><span class="pml-tag pend">· Pendiente</span></div>
-            <div class="pml-row"><span>Documentación API</span><span class="pml-av">JC</span><span class="pml-date">20 Feb</span><span class="pml-tag pend">· Pendiente</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="view-panel" id="view-calendar">
-        <div class="panel-mock">
-          <div class="pm-cal">
-            <div class="pmc-nav"><button>‹</button><strong>Enero 2025</strong><button>›</button></div>
-            <div class="pmc-grid">
-              <div class="pmc-dn">L</div><div class="pmc-dn">M</div><div class="pmc-dn">X</div><div class="pmc-dn">J</div><div class="pmc-dn">V</div><div class="pmc-dn">S</div><div class="pmc-dn">D</div>
-              <div class="pmc-d"></div><div class="pmc-d">1</div><div class="pmc-d">2</div><div class="pmc-d">3</div>
-              <div class="pmc-d has-e">4<div class="pmc-ev">Review</div></div>
-              <div class="pmc-d">5</div><div class="pmc-d">6</div>
-              <div class="pmc-d">7</div><div class="pmc-d">8</div><div class="pmc-d">9</div>
-              <div class="pmc-d has-e">10<div class="pmc-ev e2">Demo</div></div>
-              <div class="pmc-d">11</div><div class="pmc-d">12</div><div class="pmc-d">13</div>
-              <div class="pmc-d pmc-today">14</div>
-              <div class="pmc-d">15</div>
-              <div class="pmc-d has-e">16<div class="pmc-ev e3">Sprint</div></div>
-              <div class="pmc-d">17</div><div class="pmc-d">18</div><div class="pmc-d">19</div><div class="pmc-d">20</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <header class="sec-head">
+      <span class="eyebrow">Precios</span>
+      <h2 data-split>Simple y <em>transparente</em></h2>
+      <p class="reveal">Sin letra pequeña. Sin sorpresas. Todo en pesos mexicanos.</p>
+    </header>
 
-<!-- ══ DASHBOARD ═════════════════════════════════════════ -->
-<section class="section" id="dashboard">
-  <div class="container">
-    <div class="dashboard-layout">
-      <div class="dash-text reveal">
-        <span class="sec-tag">Dashboard</span>
-        <h2>Centro de Mando <span class="gradient-text">Total</span></h2>
-        <p>Una vista ejecutiva diseñada para la toma de decisiones rápida sin ruido visual. Visualiza todos tus proyectos en tiempo real.</p>
-        <ul class="dash-list">
-          <li><span class="chk">✓</span> Métricas en tiempo real</li>
-          <li><span class="chk">✓</span> Gráficas interactivas</li>
-          <li><span class="chk">✓</span> Alertas automáticas</li>
-          <li><span class="chk">✓</span> Exportación a PDF / Excel</li>
-        </ul>
-        <a href="#prueba" class="btn">Ver demo en vivo →</a>
-      </div>
-      <div class="dashboard-mockup reveal">
-        <div class="metric-card dash-card-full">
-          <div class="dash-top">
-            <span>📊 Resumen del Proyecto</span>
-            <span class="dash-chip">Esta semana</span>
-          </div>
-          <div class="dash-metrics">
-            <div class="metric-card">
-              <div class="metric-number" style="color:#ff6a00">78</div>
-              <div class="metric-label">Total tareas</div>
-              <div class="mtrend up">↑ 12%</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-number" style="color:#52c41a">33</div>
-              <div class="metric-label">Completadas</div>
-              <div class="mtrend up">↑ 8%</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-number active">24</div>
-              <div class="metric-label">En Proceso</div>
-              <div class="mtrend neu">→ 0%</div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-number" style="color:#e62e00">21</div>
-              <div class="metric-label">Pendientes</div>
-              <div class="mtrend dn">↓ 5%</div>
-            </div>
-          </div>
-          <div class="dash-prog">
-            <div class="dp-lbl"><span>Progreso general</span><span>42%</span></div>
-            <div class="dp-track"><div class="dp-fill" style="width:42%"></div></div>
-          </div>
-          <div class="dash-feed">
-            <div class="feed-item"><span class="fd green-dot"></span><span>Juan completó "Diseño UI"</span><span class="ft">hace 2h</span></div>
-            <div class="feed-item"><span class="fd yellow-dot"></span><span>María inició "Testing QA"</span><span class="ft">hace 4h</span></div>
-            <div class="feed-item"><span class="fd red-dot"></span><span>Alerta: "Backend" sin actualizar</span><span class="ft">hace 1d</span></div>
-          </div>
-        </div>
-      </div>
+    <div class="billing reveal">
+      <span class="bill-lbl active" id="lblMonthly">Mensual</span>
+      <button type="button" class="switch" id="billing" role="switch" aria-checked="false" aria-label="Pago anual"><i></i></button>
+      <span class="bill-lbl" id="lblAnnual">Anual <span class="save-badge">Ahorra 15%</span></span>
     </div>
-  </div>
-</section>
 
-<!-- ══ COMPARISON ════════════════════════════════════════ -->
-<section class="section comparison-section" id="comparison">
-  <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Comparativa</span>
-      <h2>¿Por qué <span class="gradient-text">Monira</span>?</h2>
-      <p>Comparamos lo que realmente importa para equipos en México</p>
-    </div>
-    <div class="table-wrap reveal">
-      <table class="comp-table">
-        <thead>
-          <tr>
-            <th class="feat-th">Característica</th>
-            <th class="monira-th">Monira 🏆</th>
-            <th>Otros</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Facturación en MXN</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
-          <tr><td>Soporte en español nativo</td><td class="monira-td"><span class="yes">✓ Nativo</span></td><td><span class="partial">Parcial o ninguno</span></td></tr>
-          <tr><td>Factura CFDI incluida</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
-          <tr><td>Vista Kanban</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="neutral">✓ Básico</span></td></tr>
-          <tr><td>Timeline / Gantt incluido</td><td class="monira-td"><span class="yes">✓ Incluido</span></td><td><span class="partial">Solo en planes premium</span></td></tr>
-          <tr><td>Integración WhatsApp</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
-          <tr><td>IA integrada sin costo extra</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="partial">Premium adicional</span></td></tr>
-          <tr><td>Migración automática desde otras plataformas</td><td class="monira-td"><span class="yes">✓</span></td><td><span class="no">✗</span></td></tr>
-          <tr class="price-row">
-            <td>Costo estimado por usuario/mes</td>
-            <td class="monira-td price-highlight">$20 MXN</td>
-            <td><span class="price-other">~$150–200 MXN</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="comp-note reveal">* Comparativa basada en planes estándar de plataformas de gestión de proyectos disponibles en el mercado global.</p>
-  </div>
-</section>
-
-<!-- ══ PRICING ═══════════════════════════════════════════ -->
-<section class="section pricing-section" id="pricing">
-  <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Precios</span>
-      <h2>Simple y <span class="gradient-text">transparente</span></h2>
-      <p>Sin letra pequeña. Sin sorpresas. Todo en pesos mexicanos.</p>
-    </div>
-    <div class="pricing-toggle reveal">
-      <span class="tgl-lbl active" id="lbl-m">Mensual</span>
-      <div class="tgl-switch" id="priceTgl"><div class="tgl-knob"></div></div>
-      <span class="tgl-lbl" id="lbl-a">Anual <span class="save-badge">Ahorra 15%</span></span>
-    </div>
-    <div class="pricing-table">
-      <div class="price-card reveal">
+    <div class="plans" data-stagger="120">
+      <article class="plan reveal">
         <h3>Estándar</h3>
-        <p class="price-desc">Para equipos comenzando</p>
-        <div class="price">
-          <span class="pcur">$</span><span class="pnum" id="p-std">200</span>
-          <span class="pper">MXN / mes</span>
-        </div>
+        <p class="plan-desc">Para equipos que van empezando</p>
+        <div class="plan-price"><span class="cur">$</span><span class="num" data-m="200" data-a="170">200</span><span class="per">MXN / mes</span></div>
         <ul>
-          <li>Hasta 10 usuarios</li>
-          <li>Gestión de tareas Kanban</li>
-          <li>Todas las vistas incluidas</li>
-          <li>Dashboard de métricas</li>
-          <li>Soporte por chat (L–V)</li>
-          <li>Factura CFDI</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Hasta 10 usuarios</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Lista, Kanban y Tabla</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Inicio con Mi día</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Notas</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Notificaciones</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Soporte por chat (L–V)</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Factura CFDI</li>
         </ul>
-        <a href="#prueba" class="btn full-btn btn-outline">Empezar gratis</a>
-      </div>
-      <div class="price-card featured reveal">
-        <div class="pop-badge">★ Más Popular</div>
+        <a href="#prueba" class="btn btn-ghost plan-btn">Empezar gratis</a>
+      </article>
+
+      <article class="plan featured reveal">
+        <span class="pop-badge">Más popular</span>
         <h3>Pro</h3>
-        <p class="price-desc">Para equipos en crecimiento</p>
-        <div class="price">
-          <span class="pcur">$</span><span class="pnum" id="p-pro">300</span>
-          <span class="pper">MXN / mes</span>
-        </div>
+        <p class="plan-desc">Para equipos en crecimiento</p>
+        <div class="plan-price"><span class="cur">$</span><span class="num" data-m="300" data-a="255">300</span><span class="per">MXN / mes</span></div>
         <ul>
-          <li>Hasta 20 usuarios</li>
-          <li>Todo lo de Estándar</li>
-          <li>Timeline y Gantt</li>
-          <li>Reportes avanzados con IA</li>
-          <li>Integración WhatsApp</li>
-          <li>Soporte prioritario 4h</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Hasta 20 usuarios</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Todo lo de Estándar</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Gantt con dependencias</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Pizarras con plantillas</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Panel lateral en Chrome</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Soporte prioritario en 4 h</li>
         </ul>
-        <a href="#prueba" class="btn full-btn">Elegir Pro →</a>
-      </div>
-      <div class="price-card reveal">
+        <a href="#prueba" class="btn btn-primary plan-btn magnetic">Elegir Pro <svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="plan reveal">
         <h3>Expansión</h3>
-        <p class="price-desc">Añade usuarios a cualquier plan</p>
-        <div class="price">
-          <span class="pcur">+$</span><span class="pnum" id="p-exp">100</span>
-          <span class="pper">MXN / mes</span>
-        </div>
+        <p class="plan-desc">Añade usuarios a cualquier plan</p>
+        <div class="plan-price"><span class="cur">+$</span><span class="num" data-m="100" data-a="85">100</span><span class="per">MXN / mes</span></div>
         <ul>
-          <li>+10 usuarios adicionales</li>
-          <li>Se suma a tu plan base</li>
-          <li>Sin límite de expansiones</li>
-          <li>Mismos beneficios del plan</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>+10 usuarios adicionales</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Se suma a tu plan base</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Sin límite de expansiones</li>
+          <li><svg class="icon"><use href="#i-check"/></svg>Mismos beneficios del plan</li>
         </ul>
-        <a href="#prueba" class="btn full-btn btn-outline">Cotizar →</a>
-      </div>
+        <a href="#prueba" class="btn btn-ghost plan-btn">Cotizar</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ══ TESTIMONIALS ══════════════════════════════════════ -->
-<section class="section testi-section">
-  <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">Testimonios</span>
-      <h2>Equipos que <span class="gradient-text">crecieron</span> con Monira</h2>
-    </div>
-    <div class="testi-carousel">
-      <div class="testi-track" id="testiTrack">
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Migramos desde otra plataforma y ahorramos más del 60% en costos. El soporte en español es increíble — resolvieron todo en menos de 24 horas."</p>
-          <div class="testi-author">
-            <div class="tav">MG</div>
-            <div><strong>María González</strong><span>CEO, TechMX Solutions</span></div>
-          </div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"La integración con WhatsApp cambió todo para nuestro equipo. Recibimos notificaciones de tareas directamente en el canal que ya usamos."</p>
-          <div class="testi-author">
-            <div class="tav">CR</div>
-            <div><strong>Carlos Ramírez</strong><span>Director de Ops, InnovaLab</span></div>
-          </div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Por fin una herramienta que factura en MXN con CFDI. Nuestro contador está feliz y el equipo nunca fue más productivo."</p>
-          <div class="testi-author">
-            <div class="tav">AL</div>
-            <div><strong>Ana Lozano</strong><span>CFO, Grupo Expansión Norte</span></div>
-          </div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Las vistas múltiples son lo que nos hizo elegir Monira. El equipo técnico usa lista, los managers el dashboard y el cliente el Gantt."</p>
-          <div class="testi-author">
-            <div class="tav">JH</div>
-            <div><strong>Jorge Herrera</strong><span>PM Lead, StartupMX</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-controls">
-        <button class="tcar-btn" id="tPrev">←</button>
-        <div class="tcar-dots" id="tDots"></div>
-        <button class="tcar-btn" id="tNext">→</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FAQ ════════════════════════════════════════════════ -->
+<!-- ══ FAQ ═══════════════════════════════════════════════ -->
 <section class="section" id="faq">
-  <div class="container">
-    <div class="sec-header reveal">
-      <span class="sec-tag">FAQ</span>
-      <h2>Preguntas <span class="gradient-text">frecuentes</span></h2>
+  <div class="container faq-grid">
+    <div class="faq-side">
+      <span class="eyebrow">FAQ</span>
+      <h2 data-split>Preguntas <em>frecuentes</em></h2>
+      <p class="reveal">Si no encuentras tu respuesta, escríbenos. Te contesta una persona del equipo, en español.</p>
+      <a href="#prueba" class="btn btn-ghost reveal">Hablar con el equipo <svg class="icon icon-arrow"><use href="#i-arrow"/></svg></a>
     </div>
-    <div class="faq-grid">
+    <div class="faq-list" data-stagger="70">
       <div class="faq-item reveal">
-        <button class="faq-q">¿Puedo importar mis proyectos de otras plataformas? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>Sí. Monira incluye herramientas de migración automática. El proceso toma menos de 10 minutos y no pierdes ningún dato.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Cómo se organiza el trabajo en Monira?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>En módulos, tarjetas y áreas. Cada actividad tiene responsables, prioridad, fechas, plan de trabajo, notas y comentarios, y la ves en Lista, Kanban, Gantt o Tabla.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-q">¿Hay contrato de permanencia? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>No. Cancela en cualquier momento sin penalizaciones. Plan mensual = factura mensual. Plan anual = 15% de descuento al inicio del período.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Hay contrato de permanencia?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>No. Cancela en cualquier momento sin penalizaciones. Plan mensual = factura mensual. Plan anual = 15% de descuento al inicio del periodo.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-q">¿Qué incluye el soporte? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>Todos los planes incluyen soporte por chat en español de lunes a viernes. El plan Pro incluye soporte prioritario con respuesta máxima de 4 horas.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Qué incluye el soporte?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>Todos los planes incluyen soporte por chat en español de lunes a viernes. El plan Pro incluye soporte prioritario con respuesta máxima de 4 horas.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-q">¿Mis datos están seguros? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>Cifrado AES-256, cumplimiento LFPDPPP y backups diarios automáticos con retención de 30 días. Tus datos nunca salen de México.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Quién ve mis actividades?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>Depende de tu rol. Con «Solo mis tareas» ves las actividades donde eres responsable, y puedes sumar módulos o áreas completos.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-q">¿Monira tiene aplicación móvil? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>Sí. Apps nativas para iOS y Android, más una PWA que funciona sin conexión. Tu equipo puede gestionar tareas desde cualquier lugar.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Monira funciona en el celular?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>Sí. Funciona en el navegador del celular y se instala como app: ventana propia, atajos en el ícono y contador de lo que vence hoy.</p></div></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-q">¿Cómo funciona la prueba gratuita? <span class="faq-ico">+</span></button>
-        <div class="faq-a"><p>30 días con acceso completo al plan Pro. Sin tarjeta de crédito. Al finalizar eliges el plan que mejor se adapta a tu equipo.</p></div>
+        <button type="button" class="faq-q" aria-expanded="false">¿Cómo funciona la prueba gratuita?<span class="faq-ico"><svg class="icon"><use href="#i-plus"/></svg></span></button>
+        <div class="faq-a"><div><p>30 días con acceso completo al plan Pro. Sin tarjeta de crédito. Al terminar eliges el plan que mejor se adapta a tu equipo.</p></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ CTA FINAL ══════════════════════════════════════════ -->
-<section class="cta-section" id="prueba">
+<!-- ══ CTA FINAL ═════════════════════════════════════════ -->
+<section class="cta" id="prueba">
   <div class="container">
-    <h2 class="reveal">Centraliza. Gestiona. <span class="gradient-text">Crece.</span></h2>
-    <p class="reveal">Únete a más de 500 empresas mexicanas que ya gestionan mejor con Monira</p>
-    <div class="cta-form reveal">
-      <input type="email" class="cta-input" placeholder="tu@empresa.com">
-      <button class="btn cta-submit">Solicita tu prueba gratuita de 30 días →</button>
+    <div class="cta-card reveal">
+      <div class="cta-bg" aria-hidden="true">
+        <img src="Monira-removebg-preview.png" alt="" class="cta-logo">
+        <div class="cta-grid"></div>
+      </div>
+      <span class="eyebrow">Prueba gratuita</span>
+      <h2 data-split>Centraliza. Gestiona. <em>Crece.</em></h2>
+      <p>30 días con acceso completo al plan Pro. Sin tarjeta de crédito y sin compromiso.</p>
+      <form class="cta-form" id="ctaForm" novalidate>
+        <label for="ctaEmail" class="sr-only">Correo de trabajo</label>
+        <input type="email" id="ctaEmail" name="email" placeholder="tu@empresa.com" autocomplete="email" required>
+        <button type="submit" class="btn btn-primary btn-lg magnetic"><span class="cta-btn-txt">Solicitar prueba</span><svg class="icon icon-arrow"><use href="#i-arrow"/></svg></button>
+      </form>
+      <p class="cta-msg" id="ctaMsg" role="status" aria-live="polite"></p>
+      <ul class="cta-checks">
+        <li><svg class="icon"><use href="#i-check"/></svg>30 días gratis</li>
+        <li><svg class="icon"><use href="#i-check"/></svg>Sin tarjeta de crédito</li>
+        <li><svg class="icon"><use href="#i-check"/></svg>Cancela cuando quieras</li>
+        <li><svg class="icon"><use href="#i-check"/></svg>15% de descuento en pago anual</li>
+      </ul>
     </div>
-    <div class="cta-checks reveal">
-      <span>✓ 30 días gratis</span>
-      <span>✓ Sin tarjeta de crédito</span>
-      <span>✓ Cancela cuando quieras</span>
-    </div>
-    <div class="discount-badge reveal">🎉 15% de descuento en pago anual</div>
   </div>
 </section>
+
+</main>
 
 <!-- ══ FOOTER ════════════════════════════════════════════ -->
-<footer id="footer">
+<footer class="footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-top">
       <div class="footer-brand">
-        <div class="logo">
-          <img src="Monira-removebg-preview.png" alt="Monira" class="logo-img">
-          Monira
-        </div>
+        <a href="#inicio" class="brand"><img src="Monira-removebg-preview.png" alt="" width="30" height="30"><span>Monira</span></a>
         <p>La plataforma de gestión operativa diseñada para México.</p>
-        <div class="social-row">
-          <a href="#" class="soc-btn">in</a>
-          <a href="#" class="soc-btn">𝕏</a>
-          <a href="#" class="soc-btn">ig</a>
+        <div class="social">
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="X">𝕏</a>
+          <a href="#" aria-label="Instagram">ig</a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Producto</h4>
         <ul>
-          <li><a href="#features">Funciones</a></li>
-          <li><a href="#pricing">Precios</a></li>
+          <li><a href="#funciones">Funciones</a></li>
+          <li><a href="#precios">Precios</a></li>
           <li><a href="#">Changelog</a></li>
           <li><a href="#">Roadmap</a></li>
         </ul>
@@ -627,15 +957,16 @@
         <h4>Empresa</h4>
         <ul>
           <li><a href="#">Nosotros</a></li>
-          <li><a href="#">Aviso de Privacidad</a></li>
-          <li><a href="#">Términos de Servicio</a></li>
+          <li><a href="#">Aviso de privacidad</a></li>
+          <li><a href="#">Términos de servicio</a></li>
           <li><a href="#">Contacto</a></li>
         </ul>
       </div>
     </div>
+    <div class="footer-word" id="footerWord" aria-hidden="true">Monira</div>
     <div class="footer-bottom">
-      <p>© 2025 Monira. Todos los derechos reservados. Hecho con ❤️ en México.</p>
-      <p class="footer-tagline">Centraliza · Gestiona · Crece</p>
+      <p>© <span id="year">2026</span> Monira. Todos los derechos reservados. Hecho con ❤️ en México.</p>
+      <p class="footer-tag">Centraliza · Gestiona · Crece</p>
     </div>
   </div>
 </footer>
