@@ -1,7 +1,9 @@
 /* ══════════════════════════════════════════════════════
    MONIRA — main.js
-   Nav · Reveal · Hero en vivo · Bento · Proceso · Vistas ·
-   Dashboard · Calculadora · Precios · FAQ · CTA
+   Nav · Reveal · Hero (Inicio en vivo) · Bento · Cómo funciona ·
+   Vistas (Kanban, Gantt, Lista, Tabla) · Teléfono · Calculadora ·
+   Precios · FAQ · CTA
+   Todos los datos de los mockups son de ejemplo.
 ══════════════════════════════════════════════════════ */
 
 (() => {
@@ -15,6 +17,7 @@
   const mxn = n => '$' + Math.round(n).toLocaleString('es-MX');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const ICON = id => `<svg class="icon"><use href="#${id}"/></svg>`;
 
   /* Tween numérico con rAF; devuelve una función para cancelarlo */
   function tween(from, to, dur, onUpdate, onDone) {
@@ -34,7 +37,7 @@
   /* Anima el texto de un elemento desde su último valor hasta `to` */
   const running = new WeakMap();
   function countTo(el, to, { dur = 900, fmt = v => Math.round(v).toLocaleString('es-MX') } = {}) {
-    const from = +el.dataset.val || 0;
+    const from = el.dataset.val !== undefined ? +el.dataset.val : (parseFloat(el.textContent) || 0);
     running.get(el)?.();
     el.dataset.val = to;
     running.set(el, tween(from, to, dur, v => { el.textContent = fmt(v); }));
@@ -61,7 +64,7 @@
   /* Pequeña explosión de confeti en (x, y) */
   function burst(x, y, n = 16) {
     if (reduce) return;
-    const colors = ['#ff6a00', '#ffb23f', '#e62e00', '#22c55e', '#ffffff'];
+    const colors = ['#ff6a00', '#ffb23f', '#4c6ef5', '#40c057', '#9775fa', '#ffffff'];
     for (let i = 0; i < n; i++) {
       const p = document.createElement('i');
       const a = Math.random() * Math.PI * 2;
@@ -72,6 +75,9 @@
       p.addEventListener('animationend', () => p.remove());
     }
   }
+  const burstAt = (el, n) => { const r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, n); };
+  const pop = el => { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); };
+  const bump = (el, cls = 'bump') => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
 
 
   /* ─── 1. SPLIT TEXT + REVEAL ──────────────────────── */
@@ -113,7 +119,7 @@
       if (!isIntersecting) return;
       target.classList.add('in-view');
       revealIO.unobserve(target);
-      // Al terminar, se quita .reveal para que el elemento recupere sus propias transiciones (hover, etc.)
+      // Al terminar se quita .reveal para que el elemento recupere sus propias transiciones
       if (target.classList.contains('reveal')) {
         const delay = parseFloat(getComputedStyle(target).getPropertyValue('--d')) || 0;
         setTimeout(() => target.classList.remove('reveal'), 1000 + delay);
@@ -232,126 +238,108 @@
   }
 
 
-  /* ─── 6. HERO: tablero que se mueve solo ──────────── */
-  const board = $('#heroBoard');
-  if (board && !reduce) {
-    const list = k => $(`[data-col="${k}"] .col-list`, board);
-    const todo = list('todo');
-    const prog = list('prog');
-    const done = list('done');
+  /* ─── 6. HERO: Inicio de la app en vivo ───────────── */
+  const heroDay = $('#heroDay');
+  if (heroDay && !reduce) {
+    const kpi = k => $(`#heroKpis [data-k="${k}"]`);
+    const counts = { venc: 2, hoy: 4, prox: 6, prog: 9, pend: 12, done: 48 };
+    Object.entries(counts).forEach(([k, v]) => { $('b', kpi(k)).dataset.val = v; });
+    const dayN = $('#heroDayN');
+    const bell = $('#heroBell');
+    const alertTxt = $('#heroAlert');
     const toast = $('#heroToast');
-    const progBar = $('#heroProg');
-    const progN = $('#heroProgN');
-    const checkSvg = '<svg class="icon"><use href="#i-check"/></svg>';
+    const chipB = $('.chip-b');
+    const mods = { op: '#4c6ef5', com: '#9775fa', sop: '#339af0', an: '#e64980' };
+    const modNames = { op: 'Operaciones', com: 'Comunicación', sop: 'Soporte', an: 'Analítica' };
+    const dueTxt = { venc: 'Venció hace 1 d', hoy: 'Vence hoy', prox: 'Mañana' };
     const pool = [
-      { t: 'Seguimiento a leads',      tag: 'v', label: 'Ventas',  av: 'SG', h: 100, name: 'Sofía',   due: '20 jun' },
-      { t: 'Kit de marca',             tag: 'd', label: 'Diseño',  av: 'ED', h: 20,  name: 'Eduardo', due: '21 jun' },
-      { t: 'Integración WhatsApp',     tag: 'b', label: 'Backend', av: 'AL', h: 330, name: 'Ana',     due: '23 jun' },
-      { t: 'Factura CFDI mensual',     tag: 'o', label: 'Ops',     av: 'JC', h: 200, name: 'Jorge',   due: '24 jun' },
-      { t: 'Regresión v2.4',           tag: 'q', label: 'QA',      av: 'LR', h: 150, name: 'Luis',    due: '25 jun' },
-      { t: 'Demo cliente Guadalajara', tag: 'v', label: 'Ventas',  av: 'MR', h: 280, name: 'María',   due: '26 jun' }
+      { t: 'Revisión de inventario',          mod: 'op',  p: 'p2', who: 'Jorge',     b: 'hoy',  w: 30, from: 'María' },
+      { t: 'Manual de procesos',              mod: 'sop', p: 'p3', who: 'Eduardo +1', b: 'prox', w: 20, from: 'Luis' },
+      { t: 'Actualizar tablero de indicadores', mod: 'an', p: 'p2', who: 'Ana',      b: 'venc', w: 55, from: 'Eduardo' },
+      { t: 'Encuesta de clima laboral',       mod: 'com', p: 'p3', who: 'María',     b: 'prox', w: 10, from: 'Sofía' },
+      { t: 'Inventario de equipo de cómputo', mod: 'op',  p: 'p1', who: 'Luis',      b: 'hoy',  w: 45, from: 'Ana' },
+      { t: 'Reporte de ventas semanal',       mod: 'an',  p: 'p2', who: 'Ana +1',    b: 'hoy',  w: 60, from: 'Jorge' }
     ];
-    let pct = 58, phase = 0, pi = 0, loop = null;
+    let pi = 0, bells = 3, loop = null;
+    const t = timers();
 
-    const makeTask = d => {
+    function setCount(k, v) {
+      counts[k] = Math.max(0, v);
+      const el = kpi(k);
+      countTo($('b', el), counts[k], { dur: 500 });
+      bump(el);
+    }
+    function refreshAlert() {
+      const v = counts.venc;
+      const txt = v ? `Tienes ${v} ${v === 1 ? 'vencida' : 'vencidas'} y 3 actividades para esta semana` : 'Sin vencidas · 3 actividades para esta semana';
+      alertTxt.textContent = txt;
+      $('b', chipB).textContent = v ? `Tienes ${v} ${v === 1 ? 'vencida' : 'vencidas'}` : 'Sin vencidas';
+      kpi('venc').classList.toggle('is-alert', v > 0);
+    }
+    function makeItem(d) {
       const el = document.createElement('div');
-      el.className = 'task';
-      el.dataset.name = d.name;
-      el.innerHTML = `<span class="tag tag-${d.tag}">${d.label}</span><p>${d.t}</p><div class="task-bar"><i></i></div><div class="task-f"><span class="av" style="--h:${d.h}">${d.av}</span><span class="due">${d.due}</span></div>`;
+      el.className = 'mx-item entering';
+      el.dataset.b = d.b;
+      el.dataset.mod = d.mod;
+      el.innerHTML = `<span class="mx-ck b-${d.b}">${ICON('i-check')}</span><span class="mx-title">${d.t}</span><svg class="icon mx-chev"><use href="#i-chev"/></svg><span class="mx-meta"><i class="mx-p ${d.p}">${d.p.toUpperCase()}</i><i class="mx-mod" style="--c:${mods[d.mod]}">${modNames[d.mod]}</i><i class="mx-who">${ICON('i-user')}${d.who}</i><i class="mx-due due-${d.b}">${dueTxt[d.b]}</i></span><span class="mx-bar"><i style="--w:${d.w}%"></i></span>`;
       return el;
-    };
+    }
+    function advanceModule(mod) {
+      const card = $(`#heroMods [data-mod="${mod}"]`);
+      if (!card) return;
+      const bar = $('.mx-mbar i', card);
+      const label = $('.mx-mbar b', card);
+      const ex = $('.ex', card);
+      const pct = Math.min(100, (parseInt(label.textContent, 10) || 0) + 4);
+      bar.style.setProperty('--w', `${pct}%`);
+      label.textContent = `${pct}%`;
+      if (ex) ex.textContent = +ex.textContent + 1;
+    }
 
-    // FLIP: mide, cambia el DOM y anima cada tarjeta desde su posición anterior
-    function flip(mutate) {
-      const cards = $$('.task', board);
-      const first = new Map(cards.map(c => [c, [c.offsetLeft, c.offsetTop]]));
-      mutate();
-      cards.forEach(c => {
-        if (!c.isConnected) return;
-        const [x, y] = first.get(c);
-        const dx = x - c.offsetLeft;
-        const dy = y - c.offsetTop;
-        if (!dx && !dy) return;
-        c.style.transition = 'none';
-        c.style.transform = `translate(${dx}px, ${dy}px)`;
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          c.style.transition = 'transform .9s cubic-bezier(.22,1,.36,1)';
-          c.style.transform = '';
-          setTimeout(() => { c.style.transition = ''; }, 950);
-        }));
+    function cycle() {
+      if (document.hidden) return;
+      const item = $$('.mx-item:not(.done)', heroDay)[0];
+      if (!item) return;
+      // 1) Se completa la primera actividad de «Mi día»
+      item.classList.add('done');
+      $('.mx-due', item).textContent = 'Hecho';
+      const b = item.dataset.b;
+      setCount(b, counts[b] - 1);
+      setCount('prog', counts.prog - 1);
+      setCount('done', counts.done + 1);
+      advanceModule(item.dataset.mod);
+      refreshAlert();
+      burstAt($('.mx-ck', item), 12);
+
+      // 2) Sale de la lista y entra una nueva asignación
+      t.add(1500, () => {
+        item.classList.add('leaving');
+        t.add(500, () => item.remove());
+        const d = pool[pi++ % pool.length];
+        const fresh = makeItem(d);
+        heroDay.append(fresh);
+        requestAnimationFrame(() => requestAnimationFrame(() => fresh.classList.remove('entering')));
+        setCount(d.b, counts[d.b] + 1);
+        setCount('prog', counts.prog + 1);
+        refreshAlert();
+        bells = Math.min(bells + 1, 10);
+        bell.textContent = bells > 9 ? '9+' : bells;
+        dayN.textContent = $$('.mx-item:not(.done)', heroDay).length;
+        $('b', toast).textContent = 'Nueva tarea asignada';
+        $('small', toast).textContent = `${d.from} te asignó «${d.t}»`;
+        pop(toast);
       });
     }
 
-    const counts = () => $$('.col', board).forEach(col => {
-      $('.col-h em', col).textContent = $('.col-list', col).children.length;
-    });
-
-    function showToast(card) {
-      $('b', toast).textContent = `${card.dataset.name} completó una tarea`;
-      $('small', toast).textContent = `«${$('p', card).textContent}»`;
-      toast.classList.remove('pop');
-      void toast.offsetWidth;
-      toast.classList.add('pop');
-    }
-
-    function step() {
-      if (document.hidden) return;
-      if (phase === 0) {
-        // Por hacer → En proceso
-        const card = todo.firstElementChild;
-        if (!card) return;
-        card.classList.add('moving');
-        flip(() => prog.append(card));
-        card.classList.add('in-prog');
-        setTimeout(() => $('.task-bar i', card).style.setProperty('--w', `${30 + Math.round(Math.random() * 45)}%`), 500);
-        setTimeout(() => card.classList.remove('moving'), 950);
-      } else {
-        // En proceso → Completado
-        const card = prog.firstElementChild;
-        if (!card) return;
-        card.classList.add('moving');
-        flip(() => {
-          done.prepend(card);
-          card.classList.remove('in-prog');
-          card.classList.add('is-done');
-          const due = $('.due', card);
-          due.className = 'due ok';
-          due.innerHTML = `${checkSvg}Hecho`;
-        });
-        setTimeout(() => card.classList.remove('moving'), 950);
-        showToast(card);
-        pct = Math.min(pct + 3, 97);
-        progBar.style.setProperty('--p', `${pct}%`);
-        progN.textContent = `${pct}%`;
-
-        // Sale la tarjeta más antigua de Completado y entra una nueva en Por hacer
-        setTimeout(() => {
-          const old = done.lastElementChild;
-          if (done.children.length > 3 && old) {
-            old.classList.add('leaving');
-            setTimeout(() => { old.remove(); counts(); }, 400);
-          }
-          const fresh = makeTask(pool[pi++ % pool.length]);
-          fresh.classList.add('entering');
-          todo.append(fresh);
-          requestAnimationFrame(() => requestAnimationFrame(() => fresh.classList.remove('entering')));
-          counts();
-        }, 1100);
-      }
-      counts();
-      phase = 1 - phase;
-    }
-
-    onVisible(board,
-      () => { if (!loop) loop = setInterval(step, 2800); },
-      () => { clearInterval(loop); loop = null; },
+    onVisible(heroDay,
+      () => { if (!loop) loop = setInterval(cycle, 4200); },
+      () => { clearInterval(loop); loop = null; t.clear(); },
       0.1);
   }
 
 
   /* ─── 7. MICRO-INTERACCIONES ──────────────────────── */
   if (finePointer && !reduce) {
-    // Botones magnéticos
     $$('.magnetic').forEach(b => {
       b.addEventListener('pointermove', e => {
         const r = b.getBoundingClientRect();
@@ -360,7 +348,6 @@
       });
       b.addEventListener('pointerleave', () => { b.style.setProperty('--tx', '0px'); b.style.setProperty('--ty', '0px'); });
     });
-    // Brillo que sigue al cursor en las tarjetas
     $$('.spot').forEach(c => c.addEventListener('pointermove', e => {
       const r = c.getBoundingClientRect();
       c.style.setProperty('--mx', `${e.clientX - r.left}px`);
@@ -372,13 +359,13 @@
   const countIO = new IntersectionObserver(entries => entries.forEach(({ isIntersecting, target }) => {
     if (!isIntersecting) return;
     countIO.unobserve(target);
-    const pre = target.dataset.prefix || '';
-    countTo(target, +target.dataset.count, { dur: 1600, fmt: v => pre + Math.round(v).toLocaleString('es-MX') });
+    target.dataset.val = 0;
+    countTo(target, +target.dataset.count, { dur: 1400 });
   }), { threshold: 0.6 });
   $$('[data-count]').forEach(el => countIO.observe(el));
 
 
-  /* ─── 8. BENTO: chat de soporte ───────────────────── */
+  /* ─── 8. BENTO: comentarios ───────────────────────── */
   const chat = $('#chat');
   if (chat) {
     const me = $('.msg.me', chat);
@@ -410,67 +397,77 @@
   }
 
 
-  /* ─── 9. BENTO: IA que escribe ────────────────────── */
-  const ai = $('#ai');
-  if (ai) {
-    const out = $('#aiText', ai);
-    const status = $('#aiStatus', ai);
-    const apply = $('#aiApply', ai);
-    const text = 'El proyecto «Backend» va 3 días atrasado. Sugerencia: reasignar 2 tareas a Ana para llegar a la entrega del 28 de junio.';
-    let started = false;
-    const finish = () => {
-      out.textContent = text;
-      ai.classList.add('typed');
-      status.textContent = 'Análisis listo';
-      status.classList.add('done');
-    };
-    onVisible(ai, () => {
-      if (started) return;
-      started = true;
-      if (reduce) { finish(); return; }
-      let i = 0;
-      setTimeout(function type() {
-        out.textContent = text.slice(0, ++i);
-        if (i < text.length) setTimeout(type, text[i - 1] === '.' ? 280 : 16 + Math.random() * 28);
-        else finish();
-      }, 600);
-    }, null, 0.5);
-    apply.addEventListener('click', () => {
-      if (ai.classList.contains('applied')) return;
-      ai.classList.add('applied');
-      apply.textContent = '✓ Sugerencia aplicada';
-      apply.classList.add('ok');
-      status.textContent = 'Riesgo reducido';
-      $('.ai-meter b', ai).textContent = 'Bajo';
-      const r = apply.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2);
-    });
+  /* ─── 9. BENTO: celebración al completar ──────────── */
+  const cele = $('#cele');
+  if (cele) {
+    const btn = $('#celeBtn');
+    const last = $('#celeLast');
+    const st = $('#celeSt');
+    const bar = $('#celeBar');
+    const n = $('#celeN');
+    const plan = $('#celePlan');
+    const tag = $('#celeTag');
+    const names = ['Piñata', 'Cometa', 'Galaxia', 'Medalla', 'Sello', 'Mariposas', 'Arcoíris', 'Bandera de meta', 'Lluvia de palomitas', 'Farolitos', 'Neón', 'Constelación'];
+    let ni = 0, touched = false;
+    n.dataset.val = 80;
+
+    function complete() {
+      cele.classList.add('done');
+      last.classList.add('done');
+      plan.textContent = '5/5';
+      bar.style.setProperty('--w', '100%');
+      countTo(n, 100, { dur: 600, fmt: v => `${Math.round(v)}%` });
+      st.className = 'mx-st st-done';
+      st.textContent = 'Completada';
+      tag.textContent = `¡Hecho! · ${names[ni++ % names.length]}`;
+      tag.classList.add('show');
+      btn.textContent = 'Reabrir';
+      btn.classList.add('reopen');
+      burstAt(btn, 26);
+    }
+    function reopen() {
+      cele.classList.remove('done');
+      last.classList.remove('done');
+      plan.textContent = '4/5';
+      bar.style.setProperty('--w', '80%');
+      countTo(n, 80, { dur: 400, fmt: v => `${Math.round(v)}%` });
+      st.className = 'mx-st st-prog';
+      st.textContent = 'En proceso';
+      tag.classList.remove('show');
+      btn.textContent = 'Completar actividad';
+      btn.classList.remove('reopen');
+    }
+    btn.addEventListener('click', () => { touched = true; cele.classList.contains('done') ? reopen() : complete(); });
+    last.addEventListener('click', () => { touched = true; if (!cele.classList.contains('done')) complete(); });
+    // Si nadie la toca, se completa sola una vez para mostrar la celebración
+    let auto = null;
+    onVisible(cele, () => { if (!touched && !auto) auto = setTimeout(() => { if (!touched) complete(); }, 3200); }, null, 0.6);
   }
 
 
-  /* ─── 10. PROCESO: pasos ligados al scroll ────────── */
+  /* ─── 10. CÓMO FUNCIONA: pasos ligados al scroll ──── */
   const processSec = $('#proceso');
   const steps = $$('.pstep');
   const screens = $$('.stage-screen');
   const frame = $('#stageFrame');
   const rail = $('.rail i');
   const stepsWrap = $('#processSteps');
-  const company = $('#typeCompany');
+  const typeTask = $('#typeTask');
+  const formCount = $('#formCount');
+  const st2 = timers();
   let curStep = -1;
-  let typeTimer;
 
   screens.forEach(s => s.classList.remove('active'));
 
-  function typeCompany() {
-    clearTimeout(typeTimer);
-    const text = 'Grupo Norte S.A. de C.V.';
-    if (reduce) { company.textContent = text; return; }
-    let i = 0;
-    company.textContent = '';
-    (function next() {
-      company.textContent = text.slice(0, ++i);
-      if (i < text.length) typeTimer = setTimeout(next, 55);
-    })();
+  function playForm() {
+    st2.clear();
+    const text = 'Reporte mensual de resultados';
+    if (reduce) { typeTask.textContent = text; formCount.textContent = '4 de 4'; return; }
+    typeTask.textContent = '';
+    formCount.textContent = '0 de 4';
+    [...text].forEach((ch, i) => st2.add(200 + i * 40, () => { typeTask.textContent = text.slice(0, i + 1); }));
+    st2.add(200 + text.length * 40, () => { formCount.textContent = '1 de 4'; });
+    [1, 3, 4].forEach((d, k) => st2.add(1600 + d * 220, () => { formCount.textContent = `${k + 2} de 4`; }));
   }
 
   function setStep(i) {
@@ -479,7 +476,7 @@
     steps.forEach((s, k) => s.classList.toggle('active', k === i));
     screens.forEach((s, k) => s.classList.toggle('active', k === i));
     frame.dataset.step = i + 1;
-    if (i === 0) typeCompany();
+    if (i === 1) playForm(); else st2.clear();
   }
 
   function updateProcess() {
@@ -500,6 +497,7 @@
 
   /* ─── 11. VISTAS: pestañas con autoplay ───────────── */
   const views = $('#viewsDemo');
+  let onViewShown = () => {};
   if (views) {
     const tabs = $$('.tab', views);
     const panels = $$('.vpanel', views);
@@ -514,7 +512,6 @@
       tabPill.style.width = `${t.offsetWidth}px`;
       tabPill.style.transform = `translateX(${t.offsetLeft}px)`;
     };
-
     function schedule() {
       clearTimeout(timer);
       tabs.forEach(t => t.classList.remove('timing'));
@@ -522,9 +519,8 @@
       const t = tabs[vi];
       void t.offsetWidth;
       t.classList.add('timing');
-      timer = setTimeout(() => show((vi + 1) % tabs.length), 6000);
+      timer = setTimeout(() => show((vi + 1) % tabs.length), 7000);
     }
-
     function show(i, focus) {
       vi = i;
       tabs.forEach((t, k) => {
@@ -538,9 +534,9 @@
       hint.classList.toggle('off', i !== 0);
       placeTabPill();
       if (focus) tabs[i].focus();
+      onViewShown(panels[i].id);
       schedule();
     }
-
     const stopAuto = () => { auto = false; schedule(); };
     tabs.forEach((t, i) => t.addEventListener('click', () => { stopAuto(); show(i); }));
     $('.tabs', views).addEventListener('keydown', e => {
@@ -557,42 +553,59 @@
     onVisible(views, () => { visible = true; schedule(); }, () => { visible = false; schedule(); }, 0.35);
     addEventListener('resize', placeTabPill);
     document.fonts?.ready.then(placeTabPill);
-    show(0);
+    queueMicrotask(() => show(0));
   }
 
 
-  /* ─── 12. VISTAS: kanban arrastrable ──────────────── */
+  /* ─── 12. VISTAS: Kanban por tarjeta ──────────────── */
   const vk = $('#vkBoard');
   if (vk) {
     const cols = $$('.vk-col', vk);
     let drag = null;
 
-    function refresh() {
+    function refreshCounts() {
       cols.forEach(col => {
         const em = $('.vk-h em', col);
-        const cards = $$('.vk-card', col);
-        if (+em.textContent !== cards.length) {
-          em.textContent = cards.length;
-          em.classList.remove('bump');
-          void em.offsetWidth;
-          em.classList.add('bump');
-          setTimeout(() => em.classList.remove('bump'), 400);
-        }
-        cards.forEach(c => {
-          c.classList.toggle('done', col.dataset.col === 'done');
-          if (col.dataset.col !== 'prog') c.classList.remove('hot');
-        });
+        const n = $$('.vk-card', col).length;
+        if (+em.textContent !== n) { em.textContent = n; bump(em); setTimeout(() => em.classList.remove('bump'), 400); }
       });
     }
+
+    // Estado de una tarjeta según sus sub-actividades
+    function syncCard(card, celebrate) {
+      const subs = $$('.vk-sub', card);
+      const done = subs.filter(s => s.classList.contains('done')).length;
+      const all = done === subs.length;
+      const st = $('.mx-st', card);
+      const due = $('.vk-due', card);
+      if (!due.dataset.orig) { due.dataset.orig = due.textContent; due.dataset.cls = due.className; }
+      $('.vk-sh em', card).textContent = `${done}/${subs.length}`;
+      $('.vk-sbar i', card).style.setProperty('--w', `${subs.length ? done / subs.length * 100 : 0}%`);
+      const wasDone = card.classList.contains('is-done');
+      card.classList.toggle('is-done', all);
+      if (all) {
+        st.className = 'mx-st st-done'; st.textContent = 'Ejecutado';
+        due.className = 'vk-due ok'; due.textContent = 'Hecho';
+        if (celebrate && !wasDone) burstAt(card, 20);
+      } else {
+        st.className = done ? 'mx-st st-prog' : 'mx-st st-pend';
+        st.textContent = done ? 'En proceso' : 'Pendiente';
+        if (due.textContent === 'Hecho') { due.className = due.dataset.cls === 'vk-due ok' ? 'vk-due' : due.dataset.cls; due.textContent = due.dataset.orig === 'Hecho' ? 'Reabierta' : due.dataset.orig; }
+      }
+    }
+
+    vk.addEventListener('click', e => {
+      const sub = e.target.closest('.vk-sub');
+      if (!sub) return;
+      sub.classList.toggle('done');
+      syncCard(sub.closest('.vk-card'), true);
+    });
 
     function landed(card) {
       card.classList.add('landed');
       setTimeout(() => card.classList.remove('landed'), 500);
-      refresh();
-      if (card.closest('.vk-col').dataset.col === 'done' && card.dataset.from !== 'done') {
-        const r = card.getBoundingClientRect();
-        burst(r.left + r.width / 2, r.top + r.height / 2, 18);
-      }
+      card.style.setProperty('--c', getComputedStyle(card.closest('.vk-col')).getPropertyValue('--c'));
+      refreshCounts();
     }
 
     function begin(x, y) {
@@ -609,7 +622,6 @@
       navigator.vibrate?.(10);
       move(x, y);
     }
-
     function move(x, y) {
       const { card, ox, oy, ph } = drag;
       card.style.transform = `translate(${x - ox}px, ${y - oy}px) rotate(2.5deg) scale(1.03)`;
@@ -623,7 +635,6 @@
       if (before) { if (ph.nextElementSibling !== before) list.insertBefore(ph, before); }
       else if (list.lastElementChild !== ph) list.append(ph);
     }
-
     function end() {
       if (!drag) return;
       clearTimeout(drag.hold);
@@ -646,16 +657,15 @@
 
     vk.addEventListener('pointerdown', e => {
       const card = e.target.closest('.vk-card');
-      if (!card || e.button !== 0 || drag) return;
+      if (!card || e.target.closest('.vk-sub') || e.button !== 0 || drag) return;
       const r = card.getBoundingClientRect();
       drag = {
         card, x0: e.clientX, y0: e.clientY, lx: e.clientX, ly: e.clientY,
         ox: e.clientX - r.left, oy: e.clientY - r.top, w: r.width, h: r.height,
         on: false, touch: e.pointerType !== 'mouse', hold: null
       };
-      card.dataset.from = card.closest('.vk-col').dataset.col;
       // En táctil se arrastra con pulsación larga para no bloquear el scroll
-      if (drag.touch) drag.hold = setTimeout(() => drag && begin(drag.lx, drag.ly), 220);
+      if (drag.touch) drag.hold = setTimeout(() => drag && begin(drag.lx, drag.ly), 260);
     });
     addEventListener('pointermove', e => {
       if (!drag) return;
@@ -674,16 +684,13 @@
     vk.addEventListener('touchmove', e => { if (drag && drag.on) e.preventDefault(); }, { passive: false });
     vk.addEventListener('contextmenu', e => { if (drag) e.preventDefault(); });
 
-    // Teclado: flechas ← → mueven la tarjeta enfocada entre columnas
     vk.addEventListener('keydown', e => {
       const card = e.target.closest('.vk-card');
       const dir = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-      if (!card || !dir) return;
+      if (!card || e.target !== card || !dir) return;
       e.preventDefault();
-      const from = card.closest('.vk-col');
-      const to = cols[cols.indexOf(from) + dir];
+      const to = cols[cols.indexOf(card.closest('.vk-col')) + dir];
       if (!to) return;
-      card.dataset.from = from.dataset.col;
       $('.vk-list', to).append(card);
       card.focus();
       landed(card);
@@ -691,194 +698,176 @@
   }
 
 
-  /* ─── 13. VISTAS: lista y calendario ──────────────── */
-  $$('.ls-check').forEach(btn => btn.addEventListener('click', () => {
-    const row = btn.closest('.ls-row');
-    const isDone = row.classList.toggle('done');
-    btn.setAttribute('aria-pressed', isDone);
-    btn.setAttribute('aria-label', isDone ? 'Marcar como pendiente' : 'Marcar como hecha');
-    const status = $('.ls-status', row);
-    if (isDone) {
-      if (row.dataset.status === 'Hecho') { row.dataset.status = 'Pendiente'; row.dataset.cls = 's-pend'; }
-      status.className = 'ls-status s-done';
-      status.textContent = 'Hecho';
-      const r = btn.getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2, 10);
-    } else {
-      status.className = `ls-status ${row.dataset.cls}`;
-      status.textContent = row.dataset.status;
-    }
-  }));
+  /* ─── 13. VISTAS: Gantt, Lista y Tabla ────────────── */
+  // Gantt: 21 días (12 oct – 1 nov 2026); hoy = 19 oct (día 7)
+  const gtBody = $('#gtBody');
+  const gtDeps = $('#gtDeps');
+  if (gtBody) {
+    const days = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 1];
+    $('#gtDays').innerHTML = days.map((d, i) => `<span${i === 7 ? ' class="hoy"' : ''}>${d}</span>`).join('');
+    const groups = [
+      { name: 'Operaciones', c: '#4c6ef5', rows: [
+        { t: 'Checklist de apertura', s: 0, n: 4, done: true, av: ['LR', 150] },
+        { t: 'Revisión de inventario', s: 4, n: 8, av: ['JC', 200], id: 'rev' },
+        { t: 'Inventario de equipo de cómputo', s: 13, n: 6, av: ['LR', 150], dep: 'rev' }
+      ] },
+      { name: 'Comunicación', c: '#9775fa', rows: [
+        { t: 'Campaña interna de bienvenida', s: 2, n: 9, av: ['MR', 280] },
+        { t: 'Encuesta de clima laboral', s: 9, n: 8, av: ['MR', 280] }
+      ] },
+      { name: 'Analítica', c: '#e64980', rows: [
+        { t: 'Reporte mensual de resultados', s: 1, n: 7, av: ['AL', 330] },
+        { t: 'Actualizar tablero de indicadores', s: 3, n: 3, late: true, av: ['AL', 330] }
+      ] },
+      { name: 'Capacitación', c: '#fd7e14', rows: [
+        { t: 'Capacitación del equipo nuevo', s: 8, n: 8, av: ['SG', 100] }
+      ] }
+    ];
+    let d = 0;
+    const html = groups.map(g => {
+      const head = `<div class="gt-row grp"><span class="gt-name">${ICON('i-chevd')}<span class="gt-tag" style="--c:${g.c}">${g.name}</span><small>${g.rows.length}</small></span><span class="gt-track"></span></div>`;
+      const rows = g.rows.map(r => `<div class="gt-row${r.done ? ' done' : ''}"${r.id ? ` data-id="${r.id}"` : ''}${r.dep ? ` data-dep="${r.dep}"` : ''}><span class="gt-name">${ICON(r.done ? 'i-checkc' : 'i-circle')}${r.t}</span><span class="gt-track"><span class="gt-bar${r.late ? ' late' : ''}" style="--s:${r.s};--n:${r.n};--c:${g.c};--d:${d++}"><b class="av" style="--h:${r.av[1]}">${r.av[0]}</b></span></span></div>`).join('');
+      return head + rows;
+    }).join('');
+    gtBody.insertAdjacentHTML('beforeend', html);
 
-  const calGrid = $('#calGrid');
-  if (calGrid) {
-    const events = {
-      3: ['Kickoff', '#8b6fe8'], 5: ['Entrega UX', '#ff6a00'], 9: ['Review UX', '#8b6fe8'],
-      12: ['Entrega API', '#ff6a00'], 17: ['Demo cliente', '#8b6fe8'], 19: ['Docs API', '#ff6a00'],
-      23: ['QA final', '#ff6a00'], 26: ['Lanzamiento', '#16a34a'], 30: ['Retro', '#8b6fe8']
-    };
-    let n = 0;
-    // Junio 2026 empieza en lunes: 30 días + 5 de julio para completar 5 semanas
-    for (let i = 0; i < 35; i++) {
-      const inMonth = i < 30;
-      const day = inMonth ? i + 1 : i - 29;
-      const cell = document.createElement('div');
-      cell.className = 'cal-d' + (inMonth ? '' : ' muted') + (inMonth && day === 15 ? ' today' : '');
-      cell.textContent = day;
-      const ev = inMonth && events[day];
-      if (ev) {
-        const tag = document.createElement('span');
-        tag.className = 'cal-ev';
-        tag.textContent = ev[0];
-        tag.style.setProperty('--c', ev[1]);
-        tag.style.setProperty('--d', n++);
-        cell.append(tag);
-      }
-      calGrid.append(cell);
+    // Flecha de dependencia: del final de una barra al inicio de la siguiente
+    function drawDeps() {
+      const body = gtBody.getBoundingClientRect();
+      if (!body.width) return;
+      gtDeps.setAttribute('viewBox', `0 0 ${body.width} ${body.height}`);
+      gtDeps.innerHTML = $$('[data-dep]', gtBody).map(row => {
+        const from = $(`[data-id="${row.dataset.dep}"]`, gtBody);
+        const pos = (r) => {
+          const tr = $('.gt-track', r).getBoundingClientRect();
+          const bar = $('.gt-bar', r);
+          const s = +bar.style.getPropertyValue('--s'), n = +bar.style.getPropertyValue('--n');
+          return { x1: tr.left - body.left + tr.width * s / 21, x2: tr.left - body.left + tr.width * (s + n) / 21, y: tr.top - body.top + tr.height / 2 };
+        };
+        const a = pos(from), b = pos(row);
+        const mid = a.x2 + 8;
+        return `<path d="M${a.x2.toFixed(1)} ${a.y.toFixed(1)} H${mid.toFixed(1)} V${b.y.toFixed(1)} H${(b.x1 - 2).toFixed(1)}"/><path d="M${(b.x1 - 7).toFixed(1)} ${(b.y - 4).toFixed(1)} L${(b.x1 - 2).toFixed(1)} ${b.y.toFixed(1)} L${(b.x1 - 7).toFixed(1)} ${(b.y + 4).toFixed(1)}" style="stroke-dasharray:none"/>`;
+      }).join('');
     }
+    addEventListener('resize', drawDeps);
+    const prevShown = onViewShown;
+    onViewShown = id => { prevShown(id); if (id === 'v-gantt') requestAnimationFrame(drawDeps); };
+  }
+
+  // Lista
+  const lsList = $('#lsList');
+  if (lsList) {
+    const rows = [
+      { t: 'Reporte mensual de resultados', mod: 'Analítica', c: '#e64980', card: 'Reportes', who: 'ANA LÓPEZ', st: 'prog', date: '19 oct', p: 80 },
+      { t: 'Checklist de apertura', mod: 'Operaciones', c: '#4c6ef5', card: 'Tiendas', who: 'LUIS RAMOS', st: 'prog', date: '17 oct', p: 70, late: true },
+      { t: 'Campaña interna de bienvenida', mod: 'Comunicación', c: '#9775fa', card: 'Campañas', who: 'MARÍA RUIZ', st: 'prog', date: '22 oct', p: 40 },
+      { t: 'Manual de bienvenida', mod: 'Capacitación', c: '#fd7e14', card: 'Cursos', who: 'EDUARDO DÍAZ', st: 'done', date: '14 oct', p: 100 },
+      { t: 'Revisión de inventario', mod: 'Operaciones', c: '#4c6ef5', card: 'Tiendas', who: 'JORGE CRUZ', st: 'pend', date: '23 oct', p: 0 },
+      { t: 'Encuesta de clima laboral', mod: 'Comunicación', c: '#9775fa', card: 'Campañas', who: 'MARÍA RUIZ', st: 'pend', date: '28 oct', p: 0 }
+    ];
+    const stTxt = { prog: 'En proceso', pend: 'Pendiente', done: 'Ejecutado' };
+    lsList.insertAdjacentHTML('beforeend', rows.map((r, i) => `
+      <div class="ls-row${r.st === 'done' ? ' done' : ''}" style="--d:${i}" data-st="${r.st}" data-p="${r.p}">
+        <button type="button" class="ls-ck" aria-pressed="${r.st === 'done'}" aria-label="Marcar como hecha">${ICON('i-check')}</button>
+        <span class="ls-t">${r.t}</span>
+        <span class="ls-sub"><i class="mx-mod" style="--c:${r.c}">${r.mod}</i>· ${r.card} · ${r.who}</span>
+        <span class="ls-side"><i class="mx-st st-${r.st}">${stTxt[r.st]} ▾</i><span class="ls-date"${r.late ? ' style="color:#ff8787"' : ''}>${ICON('i-cal')}${r.date}</span><span class="ls-prog"><b>${r.p}%</b><span><i style="--w:${r.p}%"></i></span></span></span>
+      </div>`).join(''));
+    lsList.addEventListener('click', e => {
+      const btn = e.target.closest('.ls-ck');
+      if (!btn) return;
+      const row = btn.closest('.ls-row');
+      const done = row.classList.toggle('done');
+      const orig = done ? null : row.dataset.st === 'done' ? 'prog' : row.dataset.st;
+      const p = done ? 100 : (+row.dataset.p === 100 ? 60 : +row.dataset.p);
+      const st = $('.mx-st', row);
+      st.className = `mx-st st-${done ? 'done' : orig}`;
+      st.textContent = `${stTxt[done ? 'done' : orig]} ▾`;
+      $('.ls-prog b', row).textContent = `${p}%`;
+      $('.ls-prog i', row).style.setProperty('--w', `${p}%`);
+      btn.setAttribute('aria-pressed', done);
+      if (done) burstAt(btn, 10);
+    });
+  }
+
+  // Tabla ordenable
+  const tbBody = $('#tbBody');
+  if (tbBody) {
+    const mods = { 'Operaciones': '#4c6ef5', 'Comunicación': '#9775fa', 'Analítica': '#e64980', 'Capacitación': '#fd7e14' };
+    const hues = { 'Ana López': 330, 'Luis Ramos': 150, 'María Ruiz': 280, 'Jorge Cruz': 200, 'Sofía Gómez': 100, 'Eduardo Díaz': 20 };
+    const stCls = { 'En proceso': 'st-prog', 'Pendiente': 'st-pend', 'Ejecutado': 'st-done' };
+    const data = [
+      { title: 'Reporte mensual de resultados', st: 'En proceso', p: 'P1', prog: 80, ini: 13, fin: 19, who: 'Ana López', mod: 'Analítica' },
+      { title: 'Checklist de apertura', st: 'En proceso', p: 'P1', prog: 70, ini: 12, fin: 17, who: 'Luis Ramos', mod: 'Operaciones' },
+      { title: 'Campaña interna de bienvenida', st: 'En proceso', p: 'P2', prog: 40, ini: 14, fin: 22, who: 'María Ruiz', mod: 'Comunicación' },
+      { title: 'Actualizar tablero de indicadores', st: 'Pendiente', p: 'P2', prog: 0, ini: 15, fin: 18, who: 'Ana López', mod: 'Analítica' },
+      { title: 'Revisión de inventario', st: 'Pendiente', p: 'P2', prog: 0, ini: 16, fin: 23, who: 'Jorge Cruz', mod: 'Operaciones' },
+      { title: 'Capacitación del equipo nuevo', st: 'Pendiente', p: 'P2', prog: 0, ini: 20, fin: 27, who: 'Sofía Gómez', mod: 'Capacitación' },
+      { title: 'Encuesta de clima laboral', st: 'Pendiente', p: 'P3', prog: 0, ini: 21, fin: 28, who: 'María Ruiz', mod: 'Comunicación' },
+      { title: 'Manual de bienvenida', st: 'Ejecutado', p: 'P3', prog: 100, ini: 6, fin: 14, who: 'Eduardo Díaz', mod: 'Capacitación' }
+    ];
+    const initials = n => n.split(' ').map(w => w[0]).join('');
+    let sortKey = 'fin', asc = true;
+    function render() {
+      const rows = data.slice().sort((a, b) => {
+        const va = a[sortKey], vb = b[sortKey];
+        const r = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb), 'es');
+        return asc ? r : -r;
+      });
+      tbBody.innerHTML = rows.map((r, i) => {
+        const late = r.fin < 19 && r.st !== 'Ejecutado';
+        return `<tr style="--d:${i}">
+          <td class="tb-t">${r.title}</td>
+          <td><i class="mx-st ${stCls[r.st]}">${r.st}</i></td>
+          <td><i class="mx-p ${r.p.toLowerCase()}">${r.p}</i></td>
+          <td><span class="tb-prog" style="--c:${r.prog === 100 ? '#40c057' : '#fab005'}"><span><i style="--w:${r.prog}%"></i></span><b>${r.prog}%</b></span></td>
+          <td>${r.ini} oct</td>
+          <td class="${late ? 'late' : ''}">${late ? '⚠ ' : ''}${r.fin} oct</td>
+          <td><span class="tb-who"><b class="av" style="--h:${hues[r.who]}">${initials(r.who)}</b>${r.who}</span></td>
+          <td><i class="mx-mod" style="--c:${mods[r.mod]}">${r.mod}</i></td>
+        </tr>`;
+      }).join('');
+    }
+    $$('#tbTable th').forEach(th => th.addEventListener('click', () => {
+      const k = th.dataset.k;
+      asc = k === sortKey ? !asc : true;
+      sortKey = k;
+      $$('#tbTable th').forEach(x => x.classList.toggle('sorted', x === th));
+      th.classList.toggle('asc', asc);
+      th.classList.toggle('desc', !asc);
+      render();
+    }));
+    render();
   }
 
 
-  /* ─── 14. DASHBOARD ───────────────────────────────── */
-  const dash = $('#dash');
-  if (dash) {
-    const data = {
-      semana: {
-        kpis: [78, 33, 24, 21],
-        trends: [['up', '↑ 12%'], ['up', '↑ 8%'], ['neu', '→ 0%'], ['dn', '↓ 5%']],
-        series: [4, 7, 5, 9, 8, 11, 6],
-        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-        tip: l => l,
-        ring: 42
-      },
-      mes: {
-        kpis: [312, 148, 96, 68],
-        trends: [['up', '↑ 18%'], ['up', '↑ 22%'], ['up', '↑ 4%'], ['dn', '↓ 11%']],
-        series: [18, 26, 22, 31, 29, 38, 44],
-        labels: ['1', '5', '10', '15', '20', '25', '30'],
-        tip: l => `${l} jun`,
-        ring: 47
-      }
-    };
-    const kpiEls = $$('.k-n', dash);
-    const trendEls = $$('.trend', dash);
-    const area = $('#dmArea');
-    const line = $('#dmLine');
-    const xAxis = $('#dmX');
-    const ring = $('#dmRing');
-    const ringN = $('#dmRingN');
-    const wrap = $('.dm-svg-wrap', dash);
-    const guide = $('#dmGuide');
-    const dot = $('#dmDot');
-    const tip = $('#dmTip');
-    const segBtns = $$('.seg button', dash);
-    const segPill = $('.seg-pill', dash);
-    let range = 'semana';
-    let series = data.semana.series.slice();
-    let stopChart = () => {};
-
-    const geometry = vals => {
-      const max = Math.max(...vals) * 1.18;
-      return vals.map((v, i) => [i * 400 / (vals.length - 1), 140 - (v / max) * 128]);
-    };
-    // Curva suave (Catmull-Rom → Bézier)
-    function pathD(pts) {
-      let d = `M${pts[0][0]},${pts[0][1].toFixed(1)}`;
-      for (let i = 0; i < pts.length - 1; i++) {
-        const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-        const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
-        const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
-        d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
-      }
-      return d;
-    }
-    function drawChart(vals) {
-      const d = pathD(geometry(vals));
-      line.setAttribute('d', d);
-      area.setAttribute('d', `${d} L400,140 L0,140 Z`);
-    }
-    function morphTo(target) {
-      stopChart();
-      const from = series.slice();
-      stopChart = tween(0, 1, 700, t => { series = from.map((v, i) => lerp(v, target[i], t)); drawChart(series); });
-    }
-    const setLabels = d => { xAxis.innerHTML = d.labels.map(l => `<span>${l}</span>`).join(''); };
-
-    function apply(name, first) {
-      const d = data[name];
-      kpiEls.forEach((el, i) => countTo(el, d.kpis[i], { dur: first ? 1400 : 700 }));
-      trendEls.forEach((el, i) => { el.className = `trend ${d.trends[i][0]}`; el.textContent = d.trends[i][1]; });
-      setLabels(d);
-      ring.style.setProperty('--p', d.ring);
-      countTo(ringN, d.ring, { dur: first ? 1600 : 700, fmt: v => `${Math.round(v)}%` });
-      if (!first) morphTo(d.series);
-    }
-
-    const placeSeg = () => {
-      const b = segBtns.find(x => x.classList.contains('on'));
-      segPill.style.width = `${b.offsetWidth}px`;
-      segPill.style.transform = `translateX(${b.offsetLeft}px)`;
-    };
-    segBtns.forEach(b => b.addEventListener('click', () => {
-      if (b.dataset.range === range) return;
-      range = b.dataset.range;
-      segBtns.forEach(x => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
-      placeSeg();
-      apply(range);
-    }));
-
-    // Tooltip sobre la gráfica
-    wrap.addEventListener('pointermove', e => {
-      const r = wrap.getBoundingClientRect();
-      const i = Math.round(clamp((e.clientX - r.left) / r.width, 0, 1) * (series.length - 1));
-      const [px, py] = geometry(series)[i];
-      const x = px / 400 * r.width;
-      guide.style.left = `${x}px`;
-      dot.style.left = `${x}px`;
-      dot.style.top = `${py / 140 * r.height}px`;
-      tip.textContent = `${data[range].tip(data[range].labels[i])} · ${Math.round(series[i])} tareas`;
-      wrap.classList.add('hover');
-      tip.classList.add('show');
+  /* ─── 14. INICIO EN TELÉFONO ──────────────────────── */
+  const phDay = $('#phDay');
+  if (phDay) {
+    const mine = $('#phMine');
+    const dayN = $('#phDayN');
+    const doneEl = $('#phDone');
+    const visibleItems = () => $$('.mx-item:not([hidden])', phDay);
+    const refreshN = () => { dayN.textContent = visibleItems().filter(i => !i.classList.contains('done')).length; };
+    mine.addEventListener('click', () => {
+      const on = !mine.classList.contains('on');
+      mine.classList.toggle('on', on);
+      mine.setAttribute('aria-pressed', on);
+      $$('.mx-item', phDay).forEach(i => { i.hidden = on && i.dataset.mine === '0'; });
+      refreshN();
     });
-    wrap.addEventListener('pointerleave', () => { wrap.classList.remove('hover'); tip.classList.remove('show'); });
-
-    // Actividad en vivo
-    const feed = $('#dmFeed');
-    const items = [
-      ['#22c55e', '<b>Ana</b> completó «Diseño de homepage»'],
-      ['#f5b301', '<b>Luis</b> movió «Testing QA» a En proceso'],
-      ['#a78bfa', '<b>María</b> comentó en «API de pagos»'],
-      ['#ff6a00', 'Factura CFDI generada · <b>Plan Pro</b>'],
-      ['#22c55e', '<b>Jorge</b> completó «Migración de datos»'],
-      ['#e62e00', 'Alerta: <b>«Backend»</b> sin actualizar 2 días']
-    ];
-    const times = ['ahora', 'hace 2 min', 'hace 7 min'];
-    let fi = 0, feedTimer = null;
-    function pushFeed(animate = true) {
-      const [c, html] = items[fi++ % items.length];
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="fd" style="--c:${c}"></span><span class="fx">${html}</span><span class="ft"></span>`;
-      if (!animate) li.style.animation = 'none';
-      feed.prepend(li);
-      const live = $$('li:not(.out)', feed);
-      live.forEach((el, i) => { $('.ft', el).textContent = times[i] || ''; });
-      if (live.length > 3) {
-        const old = live[live.length - 1];
-        old.classList.add('out');
-        setTimeout(() => old.remove(), 400);
-      }
-    }
-    for (let k = 0; k < 3; k++) pushFeed(false);
-
-    drawChart(series);
-    setLabels(data.semana);
-    placeSeg();
-    document.fonts?.ready.then(placeSeg);
-    let started = false;
-    onVisible(dash, () => {
-      if (!started) { started = true; apply('semana', true); }
-      if (!reduce && !feedTimer) feedTimer = setInterval(() => { if (!document.hidden) pushFeed(); }, 3400);
-    }, () => { clearInterval(feedTimer); feedTimer = null; }, 0.3);
+    phDay.addEventListener('click', e => {
+      const ck = e.target.closest('.mx-ck');
+      if (!ck) return;
+      const item = ck.closest('.mx-item');
+      const done = item.classList.toggle('done');
+      const due = $('.mx-due', item);
+      if (!due.dataset.orig) due.dataset.orig = due.textContent;
+      due.textContent = done ? 'Hecho' : due.dataset.orig;
+      countTo(doneEl, (+doneEl.dataset.val || 48) + (done ? 1 : -1), { dur: 400 });
+      refreshN();
+      if (done) burstAt(ck, 14);
+    });
   }
 
 
@@ -895,6 +884,7 @@
     const barO = $('#barOther');
     const perM = $('#perMonira');
     const perO = $('#perOther');
+    [costM, costO, save].forEach(el => { el.dataset.val = 0; });
     const plan = u => {
       if (u <= 10) return { name: 'Estándar', cost: 200 };
       if (u <= 20) return { name: 'Pro', cost: 300 };
@@ -981,8 +971,7 @@
       input.disabled = true;
       msg.className = 'cta-msg ok';
       msg.textContent = 'Listo. Pronto nos pondremos en contacto contigo.';
-      const r = $('button', form).getBoundingClientRect();
-      burst(r.left + r.width / 2, r.top + r.height / 2, 28);
+      burstAt($('button', form), 28);
     });
     input.addEventListener('input', () => {
       if (msg.classList.contains('err')) { msg.textContent = ''; msg.className = 'cta-msg'; form.classList.remove('shake'); }
