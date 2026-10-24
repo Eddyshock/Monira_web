@@ -1,8 +1,9 @@
 /* ══════════════════════════════════════════════════════
    MONIRA — main.js
    Nav · Reveal · Hero (Inicio en vivo) · Bento · Cómo funciona ·
-   Vistas (Kanban, Gantt, Lista, Tabla) · Teléfono · Calculadora ·
-   Precios · FAQ · CTA
+   Vistas (Kanban, Gantt, Lista, Tabla · Web / Móvil) · Teléfono ·
+   Calculadora · Precios · FAQ · CTA (y barra fija en celular)
+   Usa window.MoniraDevice (device.js) para adaptarse al dispositivo.
    Todos los datos de los mockups son de ejemplo.
 ══════════════════════════════════════════════════════ */
 
@@ -16,7 +17,9 @@
   const easeOut = t => 1 - Math.pow(1 - t, 3);
   const mxn = n => '$' + Math.round(n).toLocaleString('es-MX');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // Tipo de equipo y entrada principal, detectados en device.js
+  const device = window.MoniraDevice || { isMobile: false, touch: false, on() {} };
+  const finePointer = !device.touch && matchMedia('(hover: hover) and (pointer: fine)').matches;
   const ICON = id => `<svg class="icon"><use href="#${id}"/></svg>`;
 
   /* Tween numérico con rAF; devuelve una función para cancelarlo */
@@ -501,11 +504,16 @@
   if (views) {
     const tabs = $$('.tab', views);
     const panels = $$('.vpanel', views);
+    const keys = panels.map(p => p.id.slice(2));
     const tabPill = $('.tab-pill', views);
     const viewName = $('#vwinView');
     const hint = $('#dragHint');
     const win = $('.vwin', views);
-    let vi = 0, auto = !reduce, visible = false, hovering = false, timer;
+    const panelsWrap = $('.vpanels', views);
+    const phoneTitle = $('#vphTitle');
+    const phoneNav = $$('.vph-nav [data-go]', views);
+    const phoneNames = { kanban: 'Kanban', gantt: 'Gantt', lista: 'Tareas', tabla: 'Tabla' };
+    let vi = 0, backTo = 0, auto = !reduce, visible = false, hovering = false, timer;
 
     const placeTabPill = () => {
       const t = tabs[vi];
@@ -522,6 +530,8 @@
       timer = setTimeout(() => show((vi + 1) % tabs.length), 7000);
     }
     function show(i, focus) {
+      // Tabla se abre a pantalla completa en el celular; «Regresar» vuelve a la vista anterior
+      if (keys[i] === 'tabla' && vi !== i) backTo = vi;
       vi = i;
       tabs.forEach((t, k) => {
         const on = k === i;
@@ -531,6 +541,10 @@
       });
       panels.forEach((p, k) => p.classList.toggle('active', k === i));
       viewName.textContent = tabs[i].textContent.trim();
+      views.dataset.view = keys[i];
+      phoneTitle.textContent = phoneNames[keys[i]];
+      phoneNav.forEach(b => b.classList.toggle('on', +b.dataset.go === i));
+      panelsWrap.scrollTop = 0;
       hint.classList.toggle('off', i !== 0);
       placeTabPill();
       if (focus) tabs[i].focus();
@@ -539,6 +553,8 @@
     }
     const stopAuto = () => { auto = false; schedule(); };
     tabs.forEach((t, i) => t.addEventListener('click', () => { stopAuto(); show(i); }));
+    phoneNav.forEach(b => b.addEventListener('click', () => { stopAuto(); show(+b.dataset.go); }));
+    $('#vphBack').addEventListener('click', () => { stopAuto(); show(backTo); });
     $('.tabs', views).addEventListener('keydown', e => {
       const dir = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
       if (!dir) return;
@@ -554,6 +570,62 @@
     addEventListener('resize', placeTabPill);
     document.fonts?.ready.then(placeTabPill);
     queueMicrotask(() => show(0));
+
+    /* Switch Web / Móvil: la misma demo en ventana de navegador o en teléfono */
+    const devSwitch = $('#devSwitch');
+    const devOpts = $$('.dev-opt', devSwitch);
+    const devPill = $('.dev-pill', devSwitch);
+    const winIn = $('.vwin-in', views);
+    let dev = views.dataset.dev, devTouched = false;
+
+    const placeDevPill = () => {
+      const o = devOpts.find(b => b.dataset.dev === dev);
+      devPill.style.width = `${o.offsetWidth}px`;
+      devPill.style.transform = `translateX(${o.offsetLeft}px)`;
+    };
+    function setDev(mode, animate) {
+      if (mode === dev) return;
+      const from = animate && !reduce ? win.getBoundingClientRect() : null;
+      dev = mode;
+      views.dataset.dev = mode;
+      devOpts.forEach(b => {
+        const on = b.dataset.dev === mode;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-checked', on);
+        b.tabIndex = on ? 0 : -1;
+      });
+      placeDevPill();
+      panelsWrap.scrollTop = 0;
+      const refresh = () => onViewShown(panels[vi].id);
+      refresh();
+      if (!from) return;
+      // El marco se encoge o crece entre ventana y teléfono mientras el contenido se desvanece
+      const to = win.getBoundingClientRect();
+      const morph = win.animate(
+        [{ width: `${from.width}px`, height: `${from.height}px` }, { width: `${to.width}px`, height: `${to.height}px` }],
+        { duration: 700, easing: 'cubic-bezier(.22,1,.36,1)' }
+      );
+      winIn.animate(
+        [{ opacity: 0, transform: 'scale(.97)' }, { opacity: 0, transform: 'scale(.97)', offset: 0.45 }, { opacity: 1, transform: 'none' }],
+        { duration: 800, easing: 'ease-out' }
+      );
+      morph.finished.then(refresh, () => {});
+    }
+    devOpts.forEach(b => b.addEventListener('click', () => { devTouched = true; stopAuto(); setDev(b.dataset.dev, true); }));
+    devSwitch.addEventListener('keydown', e => {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+      e.preventDefault();
+      devTouched = true;
+      stopAuto();
+      setDev(dev === 'web' ? 'movil' : 'web', true);
+      devOpts.find(b => b.dataset.dev === dev).focus();
+    });
+    // En un celular la demo arranca en formato móvil, salvo que la persona ya eligió
+    setDev(device.isMobile ? 'movil' : 'web', false);
+    device.on(d => { if (!devTouched) setDev(d.isMobile ? 'movil' : 'web', false); });
+    addEventListener('resize', placeDevPill);
+    document.fonts?.ready.then(placeDevPill);
+    placeDevPill();
   }
 
 
@@ -625,6 +697,12 @@
     function move(x, y) {
       const { card, ox, oy, ph } = drag;
       card.style.transform = `translate(${x - ox}px, ${y - oy}px) rotate(2.5deg) scale(1.03)`;
+      // Si el tablero se desliza (teléfono o pantalla angosta), avanza al acercarse al borde
+      if (vk.scrollWidth > vk.clientWidth) {
+        const r = vk.getBoundingClientRect();
+        if (x > r.right - 36) vk.scrollLeft += 14;
+        else if (x < r.left + 36) vk.scrollLeft -= 14;
+      }
       const col = document.elementFromPoint(x, y)?.closest('.vk-col');
       cols.forEach(c => c.classList.toggle('over', c === col));
       if (!col) return;
@@ -750,8 +828,14 @@
       }).join('');
     }
     addEventListener('resize', drawDeps);
+    // En el teléfono los días se deslizan: se abre con «Hoy» a la vista, como en la app
+    const gtGrid = $('#gtGrid');
+    const toToday = () => {
+      const phone = views?.dataset.dev === 'movil';
+      gtGrid.scrollLeft = phone ? Math.max(0, $('.gt-today', gtGrid).offsetLeft - 116 - 70) : 0;
+    };
     const prevShown = onViewShown;
-    onViewShown = id => { prevShown(id); if (id === 'v-gantt') requestAnimationFrame(drawDeps); };
+    onViewShown = id => { prevShown(id); if (id === 'v-gantt') requestAnimationFrame(() => { toToday(); drawDeps(); }); };
   }
 
   // Lista
@@ -767,7 +851,7 @@
     ];
     const stTxt = { prog: 'En proceso', pend: 'Pendiente', done: 'Ejecutado' };
     lsList.insertAdjacentHTML('beforeend', rows.map((r, i) => `
-      <div class="ls-row${r.st === 'done' ? ' done' : ''}" style="--d:${i}" data-st="${r.st}" data-p="${r.p}">
+      <div class="ls-row${r.st === 'done' ? ' done' : ''}" style="--d:${i};--c:${r.c}" data-st="${r.st}" data-p="${r.p}">
         <button type="button" class="ls-ck" aria-pressed="${r.st === 'done'}" aria-label="Marcar como hecha">${ICON('i-check')}</button>
         <span class="ls-t">${r.t}</span>
         <span class="ls-sub"><i class="mx-mod" style="--c:${r.c}">${r.mod}</i>· ${r.card} · ${r.who}</span>
@@ -979,14 +1063,35 @@
   }
 
 
-  /* ─── 19. FOOTER ──────────────────────────────────── */
+  /* ─── 19. BARRA CTA EN CELULAR ────────────────────── */
+  // Aparece al pasar los botones del hero; se esconde en la demo de vistas (no tapa su
+  // barra inferior), en la sección de prueba y en el footer
+  const mCta = $('#mCta');
+  if (mCta) {
+    const seen = { hero: true, demo: false, cta: false, foot: false };
+    const update = () => mCta.classList.toggle('show', device.isMobile && !Object.values(seen).some(Boolean));
+    const watch = (el, key) => {
+      if (!el) return;
+      new IntersectionObserver(([e]) => { seen[key] = e.isIntersecting; update(); }).observe(el);
+    };
+    watch($('.hero-ctas'), 'hero');
+    watch($('#viewsDemo .vwin'), 'demo');
+    watch($('#prueba'), 'cta');
+    watch($('.footer'), 'foot');
+    const sync = () => { mCta.hidden = !device.isMobile; update(); };
+    sync();
+    device.on(sync);
+  }
+
+
+  /* ─── 20. FOOTER ──────────────────────────────────── */
   const word = $('#footerWord');
   if (word) word.innerHTML = [...word.textContent].map((ch, i) => `<span class="l" style="--i:${i}">${ch}</span>`).join('');
   const year = $('#year');
   if (year) year.textContent = new Date().getFullYear();
 
 
-  /* ─── 20. BUCLE DE SCROLL ─────────────────────────── */
+  /* ─── 21. BUCLE DE SCROLL ─────────────────────────── */
   let ticking = false;
   function onScroll() {
     ticking = false;
