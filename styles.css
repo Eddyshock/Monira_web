@@ -72,6 +72,7 @@ button { cursor: pointer; background: none; border: 0; }
   width: 20px; height: 20px; flex: none;
   fill: none; stroke: currentColor; stroke-width: 1.8;
   stroke-linecap: round; stroke-linejoin: round;
+  --accent: var(--orange);
 }
 
 /* ─── Layout ─── */
@@ -334,7 +335,7 @@ h2 em:has(.wi) { background: none; padding-right: 0; }
   color: var(--m-text);
   letter-spacing: -.005em;
 }
-.mx .icon { width: 15px; height: 15px; }
+.mx .icon { width: 15px; height: 15px; --accent: currentColor; } /* en la app el punto de acento va del color del ícono */
 .av {
   width: 22px; height: 22px; flex: none; border-radius: 50%;
   display: grid; place-items: center;
