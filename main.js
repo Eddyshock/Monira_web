@@ -1090,8 +1090,6 @@
 
 
   /* ─── 20. FOOTER ──────────────────────────────────── */
-  const word = $('#footerWord');
-  if (word) word.innerHTML = [...word.textContent].map((ch, i) => `<span class="l" style="--i:${i}">${ch}</span>`).join('');
   const year = $('#year');
   if (year) year.textContent = new Date().getFullYear();
 

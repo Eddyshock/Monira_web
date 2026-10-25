@@ -1096,10 +1096,23 @@ h2 em:has(.wi) { background: none; padding-right: 0; }
 .footer-col a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: var(--orange); transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
 @media (hover: hover) { .footer-col a:hover { color: var(--text); } }
 @media (hover: hover) { .footer-col a:hover::after { transform: scaleX(1); transform-origin: left; } }
-.footer-word { margin: 56px 0 6px; text-align: center; font-family: var(--font-display); font-size: clamp(5rem, 24vw, 21rem); font-weight: 800; letter-spacing: -.07em; line-height: .8; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.1); user-select: none; }
-.footer-word .l { display: inline-block; transform: translateY(60%); opacity: 0; transition: transform 1.1s var(--ease), opacity 1.1s var(--ease), color .6s; transition-delay: calc(var(--i) * 60ms); }
+/* Wordmark «monira» en contorno; la mariposa ocupa el lugar de la «i» */
+.footer-word { margin: 56px 0 6px; user-select: none; }
+.footer-word svg { display: block; width: clamp(14.5rem, 69vw, 61rem); height: auto; margin-inline: auto; overflow: visible; }
+.footer-word .l { pointer-events: bounding-box; transform-box: fill-box; transform: translateY(60%); opacity: 0; transition: transform 1.1s var(--ease), opacity 1.1s var(--ease); transition-delay: calc(var(--i) * 60ms); }
 .footer-word.in-view .l { transform: none; opacity: 1; }
-@media (hover: hover) { .footer-word .l:hover { color: rgba(255,106,0,.85); -webkit-text-stroke-color: transparent; transition-delay: 0s; } }
+.footer-word .l > path, .fly-line > * { fill: transparent; stroke: rgba(255,255,255,.1); stroke-width: 1px; vector-effect: non-scaling-stroke; transition: fill .6s, stroke .6s; }
+.fly-line > * { stroke: rgba(255,106,0,.35); }
+.fly-fill { opacity: 0; transition: opacity .6s; }
+.fly-flap, .fly-wings { transform-box: fill-box; transform-origin: center; }
+.footer-word.in-view .fly-flap { animation: flap .9s var(--ease) 1s; }
+@keyframes flap { 30% { transform: scaleX(.5); } 65% { transform: scaleX(1.05); } }
+@media (hover: hover) {
+  .footer-word .l:hover > path { fill: rgba(255,106,0,.85); stroke: transparent; }
+  .fly:hover .fly-fill { opacity: 1; }
+  .fly:hover .fly-line > * { stroke: transparent; }
+  .fly:hover .fly-wings { animation: flap .8s var(--ease); }
+}
 .footer-bottom { position: relative; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 26px 0 30px; border-top: 1px solid var(--line); font-size: .86rem; }
 .footer-bottom p { color: var(--dim); }
 .footer-tag { color: var(--orange) !important; letter-spacing: .08em; }
