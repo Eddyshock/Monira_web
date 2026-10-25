@@ -958,7 +958,7 @@
   /* ─── 15. CALCULADORA DE AHORRO ───────────────────── */
   const users = $('#users');
   if (users) {
-    const OTHER = 175; // MXN por usuario al mes (punto medio de ~$150–200)
+    const OTHER = 184; // MXN por usuario al mes: ClickUp Unlimited (US$10 × $18.40), el más barato con Gantt
     const out = $('#usersOut');
     const planEl = $('#calcPlan');
     const costM = $('#costMonira');
@@ -970,10 +970,11 @@
     const perO = $('#perOther');
     [costM, costO, save].forEach(el => { el.dataset.val = 0; });
     const plan = u => {
-      if (u <= 10) return { name: 'Estándar', cost: 200 };
-      if (u <= 20) return { name: 'Pro', cost: 300 };
+      if (u <= 3) return { name: 'Free', cost: 0 };
+      if (u <= 10) return { name: 'Estándar', cost: 300 };
+      if (u <= 20) return { name: 'Pro', cost: 450 };
       const ex = Math.ceil((u - 20) / 10);
-      return { name: `Pro + ${ex} ${ex === 1 ? 'expansión' : 'expansiones'}`, cost: 300 + ex * 100 };
+      return { name: `Pro + ${ex} ${ex === 1 ? 'expansión' : 'expansiones'}`, cost: 450 + ex * 200 };
     };
     function calc(dur = 450) {
       const u = +users.value;
@@ -1003,6 +1004,7 @@
     const lblM = $('#lblMonthly');
     const lblA = $('#lblAnnual');
     const nums = $$('.plan .num');
+    const cents = v => v.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     nums.forEach(el => { el.dataset.val = el.dataset.m; });
     let annual = false;
     function setBilling(a) {
@@ -1010,7 +1012,10 @@
       billing.setAttribute('aria-checked', a);
       lblM.classList.toggle('active', !a);
       lblA.classList.toggle('active', a);
-      nums.forEach(el => countTo(el, +(a ? el.dataset.a : el.dataset.m), { dur: 600 }));
+      nums.forEach(el => {
+        const to = +(a ? el.dataset.a : el.dataset.m);
+        countTo(el, to, to % 1 ? { dur: 600, fmt: cents } : { dur: 600 });
+      });
     }
     billing.addEventListener('click', () => setBilling(!annual));
     lblM.addEventListener('click', () => setBilling(false));
